@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zen Scrapper - GMB Lead Scraper & Outreach Engine by Iqam Ifthikar</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <header class="top-nav">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      </div>
+      <div class="brand-info">
+        <h1>Zen Scrapper</h1>
+        <span>Author: <strong>Iqam Ifthikar</strong></span>
+      </div>
+    </div>
+
+    <!-- Quick Search Launcher (Extended - Press Enter to search on Maps) -->
+    <div class="search-launcher">
+      <div class="search-input-wrap extended">
+        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="gmaps-search-input" placeholder="Type niche & location (e.g. Austin roofing) and press Enter to search Maps..." value="Austin Texas roofing contractor">
+      </div>
+      <button id="btn-open-directory" class="btn btn-purple" title="Browse target countries, areas, and 60+ profitable niches">
+        <span>🎯 Niches & Areas</span>
+      </button>
+    </div>
+
+    <!-- Actions (Short & Easy) -->
+    <div class="nav-actions">
+      <button id="btn-export-gcontacts" class="btn btn-purple" title="Export CSV formatted directly for Google Contacts import">
+        📇 Google Contacts
+      </button>
+      <button id="btn-export-csv" class="btn btn-emerald" title="Export Lead Spreadsheet CSV">
+        📥 Export CSV
+      </button>
+      <button id="btn-import-csv-trigger" class="btn btn-secondary" title="Import contacts from CSV">
+        📥 Import CSV
+      </button>
+      <input type="file" id="input-import-csv" accept=".csv" style="display:none;">
+      <button id="btn-cloud-status-pill" class="btn btn-outline" style="font-size:12px;padding:6px 12px;border-color:rgba(139,92,246,0.35);color:#c4b5fd;" title="Live Cloud Database Sync (Supabase & Vercel)">
+        <span id="nav-cloud-icon">☁️</span> <span id="nav-cloud-text">Live Cloud</span>
+      </button>
+      <button id="btn-settings-modal" class="btn btn-outline" title="Settings">
+        ⚙️ Settings
+      </button>
+      <div id="nav-user-container" style="display:inline-flex;align-items:center;gap:6px;">
+        <span id="nav-user-pill" class="badge-tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.3);font-size:11px;padding:6px 10px;">
+          👤 <span id="nav-user-display">Team Member</span>
+        </span>
+        <button id="btn-auth-signout" class="btn btn-danger-ghost btn-sm" style="font-size:11px;padding:6px 10px;" title="Sign out of Zen Scrapper">
+          🚪 Exit
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-content">
+    <!-- Session / Search History Organization Bar (Clean & Actionable) -->
+    <section class="session-history-bar">
+      <div class="session-selector-wrap">
+        <label for="session-select" class="session-label">📁 History:</label>
+        <select id="session-select" class="session-select" title="Switch between separated search campaigns">
+          <!-- Populated dynamically -->
+        </select>
+      </div>
+      <div class="session-actions">
+        <button id="btn-clear-current-session" class="btn btn-outline btn-sm" title="Clear all leads from active campaign (so data won't stay stored)">
+          🧹 Clear Leads
+        </button>
+        <button id="btn-delete-session" class="btn btn-outline btn-sm" title="Delete this campaign from history">
+          🗑️ Delete Campaign
+        </button>
+        <button id="btn-clear-all" class="btn btn-danger-ghost btn-sm" title="Permanently wipe all campaigns and clear storage">
+          ⚠️ Wipe All
+        </button>
+      </div>
+    </section>
+
+    <!-- Deep Search Status Banner (Hidden until running) -->
+    <div class="deep-search-banner" id="deep-search-banner">
+      <div class="spinner"></div>
+      <div class="deep-search-info">
+        <strong id="deep-search-title">Running Google Deep Search...</strong>
+        <span id="deep-search-desc">Searching Google organic results for unlisted websites and social profiles.</span>
+      </div>
+    </div>
+
+    <!-- Metric Cards (Total Leads card toggleable via settings) -->
+    <section class="metrics-grid">
+      <div class="metric-card" id="card-metric-total" style="display: none;">
+        <div class="metric-header">
+          <span class="metric-label">Total Leads</span>
+          <span class="metric-icon">🎯</span>
+        </div>
+        <div class="metric-value" id="stat-total-leads">0</div>
+        <div class="metric-sub">Active session leads</div>
+      </div>
+
+      <div class="metric-card warning">
+        <div class="metric-header">
+          <span class="metric-label">Website Faults</span>
+          <span class="metric-icon">⚠️</span>
+        </div>
+        <div class="metric-value" id="stat-total-faults">0</div>
+        <div class="metric-sub">Pitch opportunities</div>
+      </div>
+
+      <div class="metric-card danger">
+        <div class="metric-header">
+          <span class="metric-label">No Website</span>
+          <span class="metric-icon">🚨</span>
+        </div>
+        <div class="metric-value" id="stat-no-website">0</div>
+        <div class="metric-sub">Missing or social-only</div>
+      </div>
+
+      <div class="metric-card purple">
+        <div class="metric-header">
+          <span class="metric-label">Deep Search Recovered</span>
+          <span class="metric-icon">🔍</span>
+        </div>
+        <div class="metric-value" id="stat-deep-recovered">0</div>
+        <div class="metric-sub">Found on Google</div>
+      </div>
+
+      <div class="metric-card success">
+        <div class="metric-header">
+          <span class="metric-label">Contacts & Emails</span>
+          <span class="metric-icon">✉️</span>
+        </div>
+        <div class="metric-value" id="stat-with-email">0</div>
+        <div class="metric-sub">Direct reachout ready</div>
+      </div>
+    </section>
+
+    <!-- Filter & Search Toolbar -->
+    <section class="table-toolbar">
+      <div class="filter-group">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="filter-keyword" placeholder="Search business, phone, notes...">
+        </div>
+
+        <!-- Dynamic Niche Filter Dropdown -->
+        <div class="niche-filter-wrap">
+          <label for="filter-niche" class="niche-filter-label">🏷️ Niche:</label>
+          <select id="filter-niche" class="filter-niche-select" title="Filter leads by specific niche / trade">
+            <option value="all">All Niches</option>
+          </select>
+        </div>
+
+        <div class="pill-filters">
+          <button class="pill active" data-filter="all">All</button>
+          <button class="pill" data-filter="faults">⚠️ Faults</button>
+          <button class="pill" data-filter="no-website">🚨 No Website</button>
+          <button class="pill" data-filter="deep-found">🔍 Deep Found</button>
+          <button class="pill" data-filter="has-email">✉️ Email</button>
+          <button class="pill" data-filter="has-phone">📞 Phone</button>
+          <button class="pill" data-filter="missing-social">📸 Missing Socials</button>
+        </div>
+      </div>
+
+      <div class="bulk-actions">
+        <span class="active-filter-badge" id="active-filter-badge" style="display:none;"></span>
+        <button id="btn-deep-search-all" class="btn btn-purple btn-sm" title="Run Google & Web Deep Search for all missing websites & socials in this campaign">
+          🔍 Deep Search All
+        </button>
+        <button id="btn-copy-clipboard" class="btn btn-secondary btn-sm" title="Copy filtered table to clipboard">
+          📋 Copy Table
+        </button>
+      </div>
+    </section>
+
+    <!-- Leads Table View -->
+    <section class="table-card">
+      <div class="table-scroll-wrap">
+        <table class="leads-table" id="leads-table">
+          <thead>
+            <tr>
+              <th style="min-width: 48px;">#</th>
+              <th style="min-width: 170px;">Business Name</th>
+              <th style="min-width: 140px;">Owner / Contact / Arborist</th>
+              <th style="min-width: 150px;">Email Address</th>
+              <th style="min-width: 130px;">Phone Number</th>
+              <th style="min-width: 160px;">Address / Location</th>
+              <th style="min-width: 150px;">Website</th>
+              <th style="min-width: 180px;">Website Fault?</th>
+              <th style="min-width: 120px;">Last FB Post</th>
+              <th style="min-width: 110px;">FB Link</th>
+              <th style="min-width: 120px;">Last IG Post</th>
+              <th style="min-width: 110px;">IG Link</th>
+              <th style="min-width: 120px;">LinkedIn Profile</th>
+              <th style="min-width: 200px;">Other Issues / Audit Notes</th>
+              <th style="min-width: 260px;">Pitch Angle</th>
+              <th style="min-width: 140px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="leads-tbody">
+            <!-- Dynamic rows will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">📍</div>
+        <h3>No Leads in Selected Campaign</h3>
+        <p>Type a search query and launch Google Maps to scrape leads, or import a contacts CSV.</p>
+        <div class="empty-actions">
+          <button id="btn-empty-maps" class="btn btn-primary">
+            🚀 Search on Google Maps
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pitch Modal -->
+  <div class="modal-backdrop" id="pitch-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h2 id="modal-biz-name">Pitch Generator</h2>
+          <span class="modal-subtitle" id="modal-biz-sub">Targeted Cold Outreach Package</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button class="btn btn-purple btn-sm" id="btn-modal-deepsearch" title="Run Google Deep Search for this specific contact">
+            🔍 Deep Search Contact
+          </button>
+          <button class="modal-close" id="btn-close-modal">&times;</button>
+        </div>
+      </div>
+
+      <div class="modal-tabs">
+        <button class="modal-tab active" data-tab="deepsearch">🔍 Deep Search & Socials</button>
+        <button class="modal-tab" data-tab="email">✉️ Cold Email</button>
+        <button class="modal-tab" data-tab="call">📞 Call Script</button>
+        <button class="modal-tab" data-tab="dm">💬 Social DM</button>
+        <button class="modal-tab" data-tab="audit">📊 Audit Details</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Deep Search Tab Content -->
+        <div class="tab-pane active" id="pane-deepsearch">
+          <div class="form-group" style="background:#0f172a;padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <div>
+                <strong style="font-size:14px;color:#c4b5fd;">Google Deep Search Extra Details</strong>
+                <p style="font-size:12px;color:#94a3b8;">Searches Google to uncover unlisted websites, Facebook, Instagram, LinkedIn & direct emails.</p>
+              </div>
+              <button class="btn btn-purple btn-sm" id="btn-tab-deepsearch-action">
+                🔍 Run Deep Search
+              </button>
+            </div>
+
+            <div class="audit-card-grid" id="modal-deepsearch-details">
+              <!-- Dynamically populated extra details -->
+            </div>
+
+            <!-- Researched Data & Audit Trail Logs -->
+            <div id="modal-deepsearch-audit-wrap" style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.1);padding-top:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <strong style="font-size:13px;color:#a78bfa;">📋 Researched Sources & Web Audit Trail:</strong>
+                <span id="modal-deepsearch-engine-badge" class="badge-tag badge-purple" style="font-size:10px;">DuckDuckGo & Web Search</span>
+              </div>
+              <div id="modal-deepsearch-audit-log" style="background:#020617;border:1px solid #334155;border-radius:8px;padding:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#cbd5e1;max-height:220px;overflow-y:auto;line-height:1.6;">
+                <span style="color:#64748b;">No Deep Search executed yet for this contact. Click "Run Deep Search" to research the live web.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="pane-email">
+          <div class="form-group">
+            <label>Subject Line</label>
+            <div class="copy-input-row">
+              <input type="text" id="modal-email-subject" readonly>
+              <button class="btn btn-secondary btn-sm" id="btn-copy-subject">Copy</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Body</label>
+            <div class="copy-textarea-row">
+              <textarea id="modal-email-body" rows="10" readonly></textarea>
+              <button class="btn btn-emerald btn-sm" id="btn-copy-email-body">Copy Body</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="pane-call">
+          <div class="script-box" id="modal-call-script"></div>
+          <div class="modal-actions-bar">
+            <button class="btn btn-secondary" id="btn-copy-call-script">Copy Call Script</button>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="pane-dm">
+          <div class="script-box" id="modal-dm-script"></div>
+          <div class="modal-actions-bar">
+            <button class="btn btn-secondary" id="btn-copy-dm-script">Copy Social DM</button>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="pane-audit">
+          <div class="audit-card-grid" id="modal-audit-details"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btn-modal-done">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-backdrop" id="settings-modal">
+    <div class="modal-card modal-sm">
+      <div class="modal-header">
+        <h2>Outreach & Dashboard Settings</h2>
+        <button class="modal-close" id="btn-close-settings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Metric Card Display Toggle -->
+        <div class="form-group" style="padding:10px 14px;background:#1e293b;border-radius:8px;border:1px solid rgba(255,255,255,0.1);">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;text-transform:none;font-size:13px;color:#f8fafc;">
+            <input type="checkbox" id="setting-show-total-leads" style="width:auto;cursor:pointer;">
+            <span>Show <strong>"Total Leads"</strong> card on dashboard</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Your Name / Sender</label>
+          <input type="text" id="setting-sender-name" placeholder="e.g. Iqam Ifthikar" value="Iqam Ifthikar">
+        </div>
+        <div class="form-group">
+          <label>Agency Name</label>
+          <input type="text" id="setting-agency-name" placeholder="e.g. Zenthoz Digital Marketing" value="Zenthoz Digital Marketing">
+        </div>
+        <div class="form-group">
+          <label>Agency Website</label>
+          <input type="text" id="setting-agency-website" placeholder="e.g. www.zenthoz.com" value="www.zenthoz.com">
+        </div>
+        <div class="form-group">
+          <label>Direct Phone / WhatsApp</label>
+          <input type="text" id="setting-sender-phone" placeholder="e.g. +1 307 301 2270" value="+1 307 301 2270">
+        </div>
+        <div class="form-group">
+          <label>Agency Service / Pitch Focus</label>
+          <input type="text" id="setting-service-type" placeholder="e.g. High-Converting Web Design, SEO & Lead Generation" value="High-Converting Web Design, SEO & Lead Generation">
+        </div>
+
+        <!-- Live Cloud Database Sync (Supabase & Vercel) -->
+        <div class="form-group" style="padding:14px;background:#0f172a;border-radius:10px;border:1px solid rgba(139, 92, 246, 0.35);margin-top:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong style="font-size:13px;color:#c4b5fd;">☁️ Live Cloud Database (Supabase & Vercel)</strong>
+            <span id="cloud-sync-status-badge" class="badge-tag badge-neutral" style="font-size:10px;">⚪ Local Storage Only</span>
+          </div>
+          <p style="font-size:11px;color:#94a3b8;margin-bottom:12px;line-height:1.5;">
+            Connect your free Supabase PostgreSQL database to sync scraped leads live across devices and reflect changes instantly on your live Vercel web dashboard.
+          </p>
+
+          <label style="font-size:11px;color:#cbd5e1;margin-bottom:4px;display:block;">Supabase Project URL</label>
+          <input type="text" id="setting-supabase-url" placeholder="https://your-project.supabase.co" style="margin-bottom:10px;">
+
+          <label style="font-size:11px;color:#cbd5e1;margin-bottom:4px;display:block;">Supabase Anon Public Key</label>
+          <input type="password" id="setting-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." style="margin-bottom:12px;">
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <button type="button" class="btn btn-purple btn-sm" id="btn-test-cloud-sync" title="Test Supabase database connection">
+              ⚡ Test Connection
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-sync-cloud-now" title="Push all local campaigns and leads to Supabase">
+              🔄 Sync to Cloud
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" id="btn-pull-cloud-now" title="Pull latest campaigns and leads from Supabase">
+              📥 Pull from Cloud
+            </button>
+          </div>
+          <div id="cloud-sync-msg" style="font-size:11px;margin-top:10px;display:none;padding:8px 10px;border-radius:6px;line-height:1.4;"></div>
+        </div>
+
+        <!-- 👥 Team Member & User Management (Admin Only) -->
+        <div id="section-admin-team-mgmt" class="form-group" style="padding:14px;background:#0f172a;border-radius:10px;border:1px solid rgba(59, 130, 246, 0.35);margin-top:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong style="font-size:13px;color:#93c5fd;">👥 Team Members & User Management (Admin Only)</strong>
+            <span class="badge-tag badge-success" style="font-size:10px;">Admin Access</span>
+          </div>
+          <p style="font-size:11px;color:#94a3b8;margin-bottom:12px;line-height:1.5;">
+            Create logins for your team. Staff can scrape, research, and export leads, but cannot alter system settings or view database credentials.
+          </p>
+
+          <!-- Add User Form -->
+          <div style="background:#1e293b;padding:12px;border-radius:8px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.06);">
+            <div style="font-size:12px;font-weight:700;color:#f8fafc;margin-bottom:8px;">+ Add New Team Member</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+              <input type="email" id="new-team-email" placeholder="staff@zenthoz.com" style="padding:8px 10px;font-size:12px;">
+              <input type="password" id="new-team-password" placeholder="Password (min 6 chars)" style="padding:8px 10px;font-size:12px;">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+              <input type="text" id="new-team-name" placeholder="Staff Name (e.g. John)" style="padding:8px 10px;font-size:12px;">
+              <select id="new-team-role" class="form-select" style="padding:8px 10px;font-size:12px;">
+                <option value="staff">Staff (No Settings Access)</option>
+                <option value="admin">Administrator (Full Access)</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-emerald btn-sm" id="btn-create-team-user">
+              👤 Create Team User
+            </button>
+            <div id="new-team-msg" style="display:none;font-size:11px;margin-top:8px;padding:6px 10px;border-radius:6px;"></div>
+          </div>
+
+          <!-- Existing Team List -->
+          <div style="font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">Active Team Members</div>
+          <div id="team-members-list" style="max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btn-save-settings">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Target Niches & Location Areas Directory Modal -->
+  <div class="modal-backdrop" id="directory-modal">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <div>
+          <h2>🎯 Target Search Directory — Niches & Location Areas</h2>
+          <p class="modal-subtitle">Pick countries, states, areas, and 60+ niches to generate, copy, or launch search queries instantly on Google Maps.</p>
+        </div>
+        <button class="modal-close" id="btn-close-directory">&times;</button>
+      </div>
+
+      <div class="modal-tabs">
+        <button class="modal-tab active" data-dir-tab="builder">⚡ Query Generator & Fast Copy</button>
+        <button class="modal-tab" data-dir-tab="locations">🗺️ Countries & Cities</button>
+        <button class="modal-tab" data-dir-tab="niches">🛠️ All 60+ Niches</button>
+      </div>
+
+      <div class="modal-body" style="max-height: 68vh; overflow-y: auto;">
+        <!-- TAB 1: QUERY GENERATOR -->
+        <div class="dir-tab-pane active" id="dir-pane-builder">
+          <div class="builder-card">
+            <div class="builder-grid">
+              <div class="form-group">
+                <label>1. Country</label>
+                <select id="builder-country" class="form-select"></select>
+              </div>
+              <div class="form-group">
+                <label>2. State / Region / County</label>
+                <select id="builder-state" class="form-select"></select>
+              </div>
+              <div class="form-group">
+                <label>3. City / Area</label>
+                <select id="builder-area" class="form-select"></select>
+              </div>
+              <div class="form-group">
+                <label>4. Niche Category</label>
+                <select id="builder-category" class="form-select"></select>
+              </div>
+              <div class="form-group" style="grid-column: span 2;">
+                <label>5. Specific Niche Service</label>
+                <select id="builder-niche" class="form-select"></select>
+              </div>
+            </div>
+
+            <!-- Live Generated Search Term Box -->
+            <div class="query-preview-box">
+              <div class="query-preview-header">
+                <span style="font-weight:700;color:#c4b5fd;">Generated Google Maps Search Query:</span>
+                <span class="query-badge" id="builder-niche-note">Lucrative Niche</span>
+              </div>
+              <div class="query-display" id="builder-query-text">Austin Texas roofing contractor</div>
+              <div class="query-actions">
+                <button class="btn btn-emerald btn-sm" id="btn-copy-builder-query" title="Copy exact search term to clipboard">
+                  📋 Copy Search Term
+                </button>
+                <button class="btn btn-primary btn-sm" id="btn-apply-builder-query" title="Set as dashboard search term">
+                  📥 Use in Search Box
+                </button>
+                <button class="btn btn-purple btn-sm" id="btn-launch-builder-maps" title="Open Google Maps with this query in new tab">
+                  🗺️ Launch on Google Maps
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: COUNTRIES & CITIES DIRECTORY -->
+        <div class="dir-tab-pane" id="dir-pane-locations">
+          <div class="dir-filter-bar">
+            <input type="text" id="filter-locations" placeholder="Search country, state, or city name...">
+            <button class="btn btn-secondary btn-sm" id="btn-toggle-add-location">+ Add Custom Area</button>
+          </div>
+
+          <!-- Add Custom Location Drawer -->
+          <div class="custom-location-box" id="custom-location-form" style="display:none;">
+            <div style="font-size:13px;font-weight:700;color:#38bdf8;margin-bottom:8px;">Add New Country / Region / City</div>
+            <div class="builder-grid">
+              <input type="text" id="custom-country" placeholder="Country (e.g. Germany)">
+              <input type="text" id="custom-flag" placeholder="Flag emoji (e.g. 🇩🇪)">
+              <input type="text" id="custom-state" placeholder="State/Region (e.g. Bavaria)">
+              <input type="text" id="custom-area" placeholder="City/Area (e.g. Munich)">
+            </div>
+            <button class="btn btn-emerald btn-sm" id="btn-save-custom-location" style="margin-top:10px;">Save Location to Directory</button>
+          </div>
+
+          <div class="locations-tree" id="locations-tree-container">
+            <!-- Populated dynamically from LeadDirectory.locations -->
+          </div>
+        </div>
+
+        <!-- TAB 3: ALL NICHES BY CATEGORY -->
+        <div class="dir-tab-pane" id="dir-pane-niches">
+          <div class="dir-filter-bar">
+            <input type="text" id="filter-niches" placeholder="Filter niches (e.g. roofing, emergency, remodel, electrician)...">
+          </div>
+          <div class="niches-categories-grid" id="niches-cards-container">
+            <!-- Populated dynamically from LeadDirectory.categories -->
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <span style="font-size:12px;color:#94a3b8;margin-right:auto;">Tip: Click any niche or area to copy or insert directly.</span>
+        <button class="btn btn-secondary" id="btn-done-directory">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM SIGN IN / AUTH GATEKEEPER MODAL -->
+  <div class="modal-backdrop" id="auth-gate-modal" style="display:none;z-index:99999;background:rgba(10,15,30,0.96);backdrop-filter:blur(12px);">
+    <div class="modal-card" style="max-width:440px;width:92%;margin:auto;box-shadow:0 25px 60px rgba(0,0,0,0.85);border:1px solid rgba(139,92,246,0.35);padding:24px;">
+      <div class="modal-header" style="text-align:center;display:block;border-bottom:1px solid rgba(148,163,184,0.12);padding-bottom:18px;">
+        <div style="width:52px;height:52px;margin:0 auto 12px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(139,92,246,0.5);">
+          <svg viewBox="0 0 24 24" style="width:30px;height:30px;fill:#fff;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <h2 style="font-size:22px;font-weight:800;color:#f8fafc;margin:0;letter-spacing:-0.5px;">Zen Scrapper</h2>
+        <div style="font-size:12px;color:#a78bfa;font-weight:700;margin-top:4px;letter-spacing:0.5px;text-transform:uppercase;">Zenthoz Digital Marketing • Team Portal</div>
+        <p style="font-size:12px;color:#94a3b8;margin:8px 0 0;line-height:1.4;">Sign in to access your live lead scraping engine & campaigns.</p>
+      </div>
+
+      <div class="modal-body" style="padding:20px 0 10px;">
+        <form id="form-auth-login" onsubmit="return false;">
+          <div class="form-group" style="margin-bottom:14px;">
+            <label style="font-size:12px;color:#cbd5e1;font-weight:600;margin-bottom:6px;display:block;">Team Email</label>
+            <input type="email" id="auth-email" placeholder="zenthoztechnologies@gmail.com" required style="width:100%;padding:10px 12px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#fff;font-size:13px;">
+          </div>
+          <div class="form-group" style="margin-bottom:16px;">
+            <label style="font-size:12px;color:#cbd5e1;font-weight:600;margin-bottom:6px;display:block;">Password</label>
+            <input type="password" id="auth-password" placeholder="••••••••" required style="width:100%;padding:10px 12px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#fff;font-size:13px;">
+          </div>
+
+          <div id="auth-error-msg" style="display:none;background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);padding:10px 12px;border-radius:8px;font-size:12px;line-height:1.4;margin-bottom:14px;"></div>
+
+          <button type="submit" id="btn-auth-signin" class="btn btn-primary" style="width:100%;padding:12px;font-size:14px;font-weight:700;justify-content:center;">
+            🔐 Sign In to Zen Scrapper
+          </button>
+        </form>
+      </div>
+
+      <div style="text-align:center;padding-top:14px;border-top:1px solid rgba(148,163,184,0.1);font-size:11px;color:#64748b;">
+        🔒 Private Team Portal • Protected by Supabase Row-Level Security
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Footer Credits -->
+  <footer class="app-footer">
+    <div class="footer-author">Author: <strong>Iqam Ifthikar</strong></div>
+    <div class="footer-agency">Agency: <strong>Zenthoz Digital Marketing</strong> • <a href="https://www.zenthoz.com" target="_blank" rel="noopener">www.zenthoz.com</a> • +1 307 301 2270</div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="niche_classifier.js"></script>
+  <script src="pitch_generator.js"></script>
+  <script src="auditor.js"></script>
+  <script src="deep_search.js"></script>
+  <script src="lead_directory.js"></script>
+  <script src="supabase_sync.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

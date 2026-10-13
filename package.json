@@ -1,0 +1,19 @@
+{
+  "name": "zen-scrapper",
+  "version": "1.5.0",
+  "description": "Zen Scrapper - GMB Lead Scraper & Outreach Engine by Iqam Ifthikar | Zenthoz Digital Marketing (www.zenthoz.com)",
+  "author": "Iqam Ifthikar <Zenthoz Digital Marketing>",
+  "scripts": {
+    "test": "node test_runner.js",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "lead-scraper",
+    "google-my-business",
+    "cold-outreach",
+    "zenthoz",
+    "supabase",
+    "vercel"
+  ],
+  "license": "MIT"
+}

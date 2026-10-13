@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeadPitcher AI Side Panel</title>
+  <link rel="stylesheet" href="sidepanel.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="sp-container">
+    <header class="sp-header">
+      <div class="sp-brand">
+        <div class="sp-logo">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <div>
+          <h2>Zen Scrapper</h2>
+          <span>by Iqam Ifthikar</span>
+        </div>
+      </div>
+      <button id="sp-btn-full" class="sp-btn-icon" title="Open Full Dashboard">↗</button>
+    </header>
+
+    <div class="sp-summary">
+      <div class="sp-stat-box">
+        <span class="sp-stat-num" id="sp-total">0</span>
+        <span class="sp-stat-lbl">Leads</span>
+      </div>
+      <div class="sp-stat-box">
+        <span class="sp-stat-num amber" id="sp-faults">0</span>
+        <span class="sp-stat-lbl">Faults</span>
+      </div>
+      <div class="sp-stat-box">
+        <span class="sp-stat-num green" id="sp-emails">0</span>
+        <span class="sp-stat-lbl">Emails</span>
+      </div>
+    </div>
+
+    <div class="sp-actions">
+      <button id="sp-btn-export" class="sp-btn sp-btn-emerald">📥 Export CSV</button>
+      <button id="sp-btn-dash" class="sp-btn sp-btn-secondary">📊 Full Dashboard</button>
+    </div>
+
+    <div class="sp-search-bar">
+      <input type="text" id="sp-search" placeholder="Filter scraped leads...">
+    </div>
+
+    <div class="sp-leads-list" id="sp-leads-list">
+      <!-- Dynamic lead cards -->
+    </div>
+  </div>
+
+  <script src="pitch_generator.js"></script>
+  <script src="auditor.js"></script>
+  <script src="test_mock_data.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>
