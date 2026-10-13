@@ -3,8 +3,8 @@
   "name": "zen-scrapper",
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/", "destination": "/dashboard.html" },
-    { "source": "/dashboard", "destination": "/dashboard.html" }
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/dashboard", "destination": "/index.html" }
   ],
   "headers": [
     {
