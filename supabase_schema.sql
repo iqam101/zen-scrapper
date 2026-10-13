@@ -88,41 +88,17 @@ CREATE POLICY "Allow all on team_members" ON public.team_members
     USING (true)
     WITH CHECK (true);
 
--- 7. Auto-Confirm Email Trigger
--- Ensures team members and admins created in the system never get blocked by "Email not confirmed"
-CREATE OR REPLACE FUNCTION public.handle_auto_confirm_user()
-RETURNS trigger AS $$
-BEGIN
-  NEW.email_confirmed_at := COALESCE(NEW.email_confirmed_at, NOW());
-  NEW.confirmed_at := COALESCE(NEW.confirmed_at, NOW());
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-DROP TRIGGER IF EXISTS trigger_auto_confirm_user ON auth.users;
-CREATE TRIGGER trigger_auto_confirm_user
-  BEFORE INSERT ON auth.users
-  FOR EACH ROW
-  EXECUTE FUNCTION public.handle_auto_confirm_user();
-
--- Auto-confirm any existing users (such as zenthoztechnologies@gmail.com)
+-- 7. Confirm All Accounts in Auth (Ensures logins are never blocked)
 UPDATE auth.users
 SET email_confirmed_at = NOW(), confirmed_at = NOW()
 WHERE email_confirmed_at IS NULL;
 
--- Automatically register zenthoztechnologies@gmail.com as Admin in team_members
+-- 8. Register Admin User in team_members
 INSERT INTO public.team_members (id, email, role, name, created_by)
-SELECT id::text, email, 'admin', 'Iqam Ifthikar (Admin)', 'system'
-FROM auth.users
-WHERE email = 'zenthoztechnologies@gmail.com'
+VALUES ('admin_primary', 'zenthoztechnologies@gmail.com', 'admin', 'Iqam Ifthikar (Admin)', 'system')
 ON CONFLICT (email) DO UPDATE SET role = 'admin';
 
--- If user does not exist in auth.users yet, insert placeholder admin
-INSERT INTO public.team_members (id, email, role, name, created_by)
-VALUES ('admin_zenthoz_primary', 'zenthoztechnologies@gmail.com', 'admin', 'Iqam Ifthikar (Admin)', 'system')
-ON CONFLICT (email) DO UPDATE SET role = 'admin';
-
--- 8. Enable Realtime Replication for Live Changes
+-- 9. Enable Realtime Replication for Live Changes
 ALTER PUBLICATION supabase_realtime ADD TABLE public.sessions;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.leads;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.team_members;
