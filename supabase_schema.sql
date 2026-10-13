@@ -90,7 +90,7 @@ CREATE POLICY "Allow all on team_members" ON public.team_members
 
 -- 7. Confirm All Accounts in Auth (Ensures logins are never blocked)
 UPDATE auth.users
-SET email_confirmed_at = NOW(), confirmed_at = NOW()
+SET email_confirmed_at = NOW()
 WHERE email_confirmed_at IS NULL;
 
 -- 8. Register Admin User in team_members
