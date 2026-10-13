@@ -36,50 +36,42 @@ flowchart LR
 
 ---
 
-### Step 2: Connect Zen Scrapper Extension to Cloud DB
+### Step 2: Preconfigured Cloud DB & Admin Account
 
-1. Open your **Zen Scrapper Dashboard** in Chrome.
-2. Click **"⚙️ Settings"** (top right) or the **"☁️ Live Cloud"** button.
-3. Scroll down to the **☁️ Live Cloud Database (Supabase & Vercel)** box:
-   - Paste your **Supabase Project URL**.
-   - Paste your **Supabase Anon Public Key**.
-   - Click **"⚡ Test Connection"** ➔ You will see `🟢 Successfully connected to Supabase PostgreSQL database!`.
-   - Click **"🔄 Sync to Cloud"** to push all your existing search campaigns and leads to the cloud.
-   - Click **"Save Settings"**.
-4. The top bar will now show **`☁️ Cloud: Active`** with a green badge! Every lead you scrape or edit will now be saved in the cloud.
+Your Supabase project credentials are now preconfigured directly into the codebase:
+- **Project URL:** `https://yvyzaxvslbtilcaalwdw.supabase.co`
+- **Anon Public Key:** `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
+- **Admin Account:** `zenthoztechnologies@gmail.com`
+- **Password:** `Zentech@400`
+
+Neither you nor your staff need to manually type keys into the settings—it is configured out of the box!
 
 ---
 
-### Step 3: Deploy Live Web Dashboard to Vercel (Takes 2 minutes)
+### Step 3: Deploy Live Web Dashboard to Vercel (1-Click)
 
-You can deploy the Zen Scrapper web dashboard to Vercel for free with a custom URL:
+The repository is already connected and pushed to GitHub at:
+👉 **[https://github.com/iqam101/zen-scrapper](https://github.com/iqam101/zen-scrapper)**
 
-#### Option A: 1-Click via GitHub + Vercel
-1. Initialize a Git repository and push this directory (`scratch/lead-scraper-extension`) to GitHub:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial Zen Scrapper release with cloud sync"
-   git remote add origin https://github.com/your-username/zen-scrapper.git
-   git push -u origin main
-   ```
-2. Go to **[vercel.com](https://vercel.com)** and log in with GitHub.
-3. Click **"Add New... ➔ Project"** and select your `zen-scrapper` repository.
-4. Leave all default settings (the included `vercel.json` and `package.json` will automatically configure routing).
-5. Click **"Deploy"**.
-6. In ~20 seconds, your dashboard is live at:
+To deploy to Vercel:
+1. Go to **[vercel.com/new](https://vercel.com/new)** and log in with your GitHub account.
+2. Select your repository: **`iqam101/zen-scrapper`**.
+3. Leave all default settings (the included `vercel.json` and `package.json` configure everything automatically).
+4. Click **"Deploy"**.
+5. In ~20 seconds, your live dashboard will be active at:
    ```text
    https://zen-scrapper.vercel.app
    ```
+6. Every time you ask for code updates, changes pushed to GitHub will automatically deploy to Vercel!
 
-#### Option B: Deploy via Vercel CLI (Direct from Terminal)
-If you have Node.js and the Vercel CLI installed:
-```bash
-npm install -g vercel
-cd scratch/lead-scraper-extension
-vercel
-```
-Follow the prompts (accept defaults). Your live URL will be ready immediately!
+---
+
+### 👥 Team Authentication & Role-Based Access Control
+
+| Role | Access Level | Permissions |
+| :--- | :--- | :--- |
+| **👑 Administrator** (`zenthoztechnologies@gmail.com`) | Full System Control | Scrape leads, Deep Search, Export CSV/Google Contacts, **Access ⚙️ Settings**, change branding/pitch settings, and **Create or Remove Staff Users**. |
+| **👤 Staff Member** (e.g. `staff@zenthoz.com`) | Operational Scraper | Scrape leads on Google Maps, run Deep Search audits, view search history, filter by niche or "No Website", generate pitches, and export leads. **⚙️ Settings are hidden and blocked** to protect agency keys and configs. |
 
 ---
 
