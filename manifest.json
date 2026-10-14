@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Zen Scrapper - GMB Lead Scraper & Outreach Engine",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "author": "Iqam Ifthikar",
   "description": "Zen Scrapper by Iqam Ifthikar: Scrape Google My Business leads, run Deep Search on Google for missing websites & socials, audit website faults, and generate winning pitch angles.",
   "icons": {
