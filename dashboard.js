@@ -2353,13 +2353,61 @@
     renderNichesCards();
   }
 
+  // 13. CHROME EXTENSION DOWNLOAD & INSTALLATION GUIDE MODAL
+  function initDownloadExtModal() {
+    const extModal = document.getElementById('modal-download-ext');
+    const btnDownloadNav = document.getElementById('btn-download-ext');
+    const btnDownloadEmpty = document.getElementById('btn-empty-download-ext');
+    const btnClose = document.getElementById('btn-close-download-ext');
+    const btnDone = document.getElementById('btn-done-download-ext');
+
+    if (!extModal) return;
+
+    function openModal() {
+      extModal.classList.add('active');
+    }
+
+    function closeModal() {
+      extModal.classList.remove('active');
+    }
+
+    if (btnDownloadNav) {
+      btnDownloadNav.addEventListener('click', () => {
+        showToast('📥 Downloading Zen Scrapper extension...', 'info');
+        openModal();
+      });
+    }
+
+    if (btnDownloadEmpty) {
+      btnDownloadEmpty.addEventListener('click', () => {
+        const a = document.createElement('a');
+        a.href = 'zen-scrapper-extension.zip';
+        a.download = 'zen-scrapper-extension.zip';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('📥 Downloading Zen Scrapper extension...', 'info');
+        openModal();
+      });
+    }
+
+    if (btnClose) btnClose.addEventListener('click', closeModal);
+    if (btnDone) btnDone.addEventListener('click', closeModal);
+
+    extModal.addEventListener('click', (e) => {
+      if (e.target === extModal) closeModal();
+    });
+  }
+
   // Initialize
   document.addEventListener('DOMContentLoaded', async () => {
     setupEvents();
     initDirectoryModal();
+    initDownloadExtModal();
     const isAuthed = await checkAuthGate();
     if (isAuthed) {
       loadData();
     }
   });
 })();
+

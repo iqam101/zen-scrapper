@@ -298,7 +298,10 @@
 
     const btnDashboard = bar.querySelector('#lp-btn-dashboard');
     btnDashboard.addEventListener('click', () => {
-      chrome.runtime.sendMessage({ type: 'OPEN_DASHBOARD' });
+      chrome.runtime.sendMessage({ 
+        type: 'OPEN_DASHBOARD',
+        payload: { url: 'https://zen-scrapper.vercel.app/dashboard.html' }
+      });
     });
   }
 

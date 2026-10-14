@@ -35,10 +35,13 @@
 
     <!-- Actions (Short & Easy) -->
     <div class="nav-actions">
+      <a href="zen-scrapper-extension.zip" download="zen-scrapper-extension.zip" id="btn-download-ext" class="btn btn-emerald" style="text-decoration:none;font-weight:700;box-shadow:0 0 14px rgba(16,185,129,0.35);display:inline-flex;align-items:center;gap:6px;" title="Download Zen Scrapper Chrome Extension for your browser">
+        🧩 Install Extension
+      </a>
       <button id="btn-export-gcontacts" class="btn btn-purple" title="Export CSV formatted directly for Google Contacts import">
         📇 Google Contacts
       </button>
-      <button id="btn-export-csv" class="btn btn-emerald" title="Export Lead Spreadsheet CSV">
+      <button id="btn-export-csv" class="btn btn-secondary" title="Export Lead Spreadsheet CSV">
         📥 Export CSV
       </button>
       <button id="btn-import-csv-trigger" class="btn btn-secondary" title="Import contacts from CSV">
@@ -218,6 +221,9 @@
         <div class="empty-actions">
           <button id="btn-empty-maps" class="btn btn-primary">
             🚀 Search on Google Maps
+          </button>
+          <button id="btn-empty-download-ext" class="btn btn-emerald" style="display:inline-flex;align-items:center;gap:6px;font-weight:700;">
+            🧩 Download Chrome Extension
           </button>
         </div>
       </div>
@@ -534,6 +540,76 @@
       <div class="modal-footer">
         <span style="font-size:12px;color:#94a3b8;margin-right:auto;">Tip: Click any niche or area to copy or insert directly.</span>
         <button class="btn btn-secondary" id="btn-done-directory">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHROME EXTENSION DOWNLOAD & INSTALLATION GUIDE MODAL -->
+  <div class="modal-backdrop" id="modal-download-ext">
+    <div class="modal-card" style="max-width:680px;width:95%;">
+      <div class="modal-header">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(16,185,129,0.4);">
+            <span style="font-size:22px;">🧩</span>
+          </div>
+          <div>
+            <h2 style="font-size:20px;font-weight:800;color:#f8fafc;margin:0;">Zen Scrapper Chrome Extension</h2>
+            <p class="modal-subtitle" style="margin:2px 0 0;color:#94a3b8;font-size:12px;">Install on Chrome, Edge, Brave, or Opera to scrape leads directly from Google Maps</p>
+          </div>
+        </div>
+        <button class="modal-close" id="btn-close-download-ext" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:18px 22px;">
+        <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:14px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div style="font-size:14px;font-weight:700;color:#34d399;">zen-scrapper-extension.zip</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Pre-configured with Supabase live cloud sync & Google Maps auto-scraper</div>
+          </div>
+          <a href="zen-scrapper-extension.zip" download="zen-scrapper-extension.zip" class="btn btn-emerald" style="text-decoration:none;font-weight:700;padding:8px 16px;font-size:13px;box-shadow:0 0 16px rgba(16,185,129,0.4);">
+            📥 Download Extension ZIP
+          </a>
+        </div>
+
+        <div style="font-size:13px;font-weight:700;color:#f8fafc;margin-bottom:12px;">⚡ 3-Step Quick Installation Guide:</div>
+
+        <div class="installation-steps" style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:12px;background:#1e293b;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+            <div style="width:28px;height:28px;border-radius:50%;background:#3b82f6;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">1</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#e2e8f0;">Unzip the downloaded file</div>
+              <div style="font-size:12px;color:#94a3b8;margin-top:2px;">Right-click <code>zen-scrapper-extension.zip</code> and select <strong>"Extract All..."</strong> to extract into a folder on your computer.</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;background:#1e293b;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+            <div style="width:28px;height:28px;border-radius:50%;background:#8b5cf6;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">2</div>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:700;color:#e2e8f0;">Open Extensions & Enable Developer Mode</div>
+              <div style="font-size:12px;color:#94a3b8;margin-top:2px;">
+                In Chrome or Brave, navigate to <code>chrome://extensions</code> (or <code>edge://extensions</code> for Edge).
+                Toggle ON <strong>"Developer mode"</strong> in the top-right corner.
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;background:#1e293b;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+            <div style="width:28px;height:28px;border-radius:50%;background:#10b981;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">3</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#e2e8f0;">Click "Load unpacked" & Select Folder</div>
+              <div style="font-size:12px;color:#94a3b8;margin-top:2px;">Click the <strong>"Load unpacked"</strong> button in the top-left and select the unzipped folder. The Zen Scrapper extension is now installed!</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;padding:12px 14px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);border-radius:8px;font-size:12px;color:#93c5fd;line-height:1.5;">
+          💡 <strong>How it works:</strong> Search any niche or location on Google Maps (e.g. <em>"Austin Texas roofing contractor"</em>). The floating Zen Scrapper widget automatically appears. Click <strong>"🚀 Auto-Scrape & Audit All"</strong>. When finished, clicking <strong>"📊 Open Dashboard"</strong> sends you straight to this live cloud dashboard with all leads synced automatically!
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex;justify-content:space-between;align-items:center;">
+        <a href="https://www.google.com/maps/search/roofing+contractor" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+          🗺️ Open Google Maps
+        </a>
+        <button class="btn btn-secondary" id="btn-done-download-ext">Got it, Let's Go</button>
       </div>
     </div>
   </div>
