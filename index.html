@@ -35,33 +35,19 @@
 
     <!-- Actions (Short & Easy) -->
     <div class="nav-actions">
-      <a href="zen-scrapper-extension.zip" download="zen-scrapper-extension.zip" id="btn-download-ext" class="btn btn-emerald" style="text-decoration:none;font-weight:700;box-shadow:0 0 14px rgba(16,185,129,0.35);display:inline-flex;align-items:center;gap:6px;" title="Download Zen Scrapper Chrome Extension for your browser">
-        🧩 Install Extension
-      </a>
       <button id="btn-export-gcontacts" class="btn btn-purple" title="Export CSV formatted directly for Google Contacts import">
         📇 Google Contacts
       </button>
-      <button id="btn-export-csv" class="btn btn-secondary" title="Export Lead Spreadsheet CSV">
+      <button id="btn-export-csv" class="btn btn-emerald" title="Export Lead Spreadsheet CSV">
         📥 Export CSV
       </button>
       <button id="btn-import-csv-trigger" class="btn btn-secondary" title="Import contacts from CSV">
         📥 Import CSV
       </button>
       <input type="file" id="input-import-csv" accept=".csv" style="display:none;">
-      <button id="btn-cloud-status-pill" class="btn btn-outline" style="font-size:12px;padding:6px 12px;border-color:rgba(139,92,246,0.35);color:#c4b5fd;" title="Live Cloud Database Sync (Supabase & Vercel)">
-        <span id="nav-cloud-icon">☁️</span> <span id="nav-cloud-text">Live Cloud</span>
-      </button>
       <button id="btn-settings-modal" class="btn btn-outline" title="Settings">
         ⚙️ Settings
       </button>
-      <div id="nav-user-container" style="display:inline-flex;align-items:center;gap:6px;">
-        <span id="nav-user-pill" class="badge-tag" style="background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.3);font-size:11px;padding:6px 10px;">
-          👤 <span id="nav-user-display">Team Member</span>
-        </span>
-        <button id="btn-auth-signout" class="btn btn-danger-ghost btn-sm" style="font-size:11px;padding:6px 10px;" title="Sign out of Zen Scrapper">
-          🚪 Exit
-        </button>
-      </div>
     </div>
   </header>
 
@@ -222,9 +208,6 @@
           <button id="btn-empty-maps" class="btn btn-primary">
             🚀 Search on Google Maps
           </button>
-          <button id="btn-empty-download-ext" class="btn btn-emerald" style="display:inline-flex;align-items:center;gap:6px;font-weight:700;">
-            🧩 Download Chrome Extension
-          </button>
         </div>
       </div>
     </section>
@@ -363,72 +346,6 @@
           <input type="text" id="setting-service-type" placeholder="e.g. High-Converting Web Design, SEO & Lead Generation" value="High-Converting Web Design, SEO & Lead Generation">
         </div>
 
-        <!-- Live Cloud Database Sync (Supabase & Vercel) -->
-        <div class="form-group" style="padding:14px;background:#0f172a;border-radius:10px;border:1px solid rgba(139, 92, 246, 0.35);margin-top:12px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <strong style="font-size:13px;color:#c4b5fd;">☁️ Live Cloud Database (Supabase & Vercel)</strong>
-            <span id="cloud-sync-status-badge" class="badge-tag badge-neutral" style="font-size:10px;">⚪ Local Storage Only</span>
-          </div>
-          <p style="font-size:11px;color:#94a3b8;margin-bottom:12px;line-height:1.5;">
-            Connect your free Supabase PostgreSQL database to sync scraped leads live across devices and reflect changes instantly on your live Vercel web dashboard.
-          </p>
-
-          <label style="font-size:11px;color:#cbd5e1;margin-bottom:4px;display:block;">Supabase Project URL</label>
-          <input type="text" id="setting-supabase-url" placeholder="https://your-project.supabase.co" style="margin-bottom:10px;">
-
-          <label style="font-size:11px;color:#cbd5e1;margin-bottom:4px;display:block;">Supabase Anon Public Key</label>
-          <input type="password" id="setting-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." style="margin-bottom:12px;">
-
-          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-            <button type="button" class="btn btn-purple btn-sm" id="btn-test-cloud-sync" title="Test Supabase database connection">
-              ⚡ Test Connection
-            </button>
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-sync-cloud-now" title="Push all local campaigns and leads to Supabase">
-              🔄 Sync to Cloud
-            </button>
-            <button type="button" class="btn btn-outline btn-sm" id="btn-pull-cloud-now" title="Pull latest campaigns and leads from Supabase">
-              📥 Pull from Cloud
-            </button>
-          </div>
-          <div id="cloud-sync-msg" style="font-size:11px;margin-top:10px;display:none;padding:8px 10px;border-radius:6px;line-height:1.4;"></div>
-        </div>
-
-        <!-- 👥 Team Member & User Management (Admin Only) -->
-        <div id="section-admin-team-mgmt" class="form-group" style="padding:14px;background:#0f172a;border-radius:10px;border:1px solid rgba(59, 130, 246, 0.35);margin-top:12px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <strong style="font-size:13px;color:#93c5fd;">👥 Team Members & User Management (Admin Only)</strong>
-            <span class="badge-tag badge-success" style="font-size:10px;">Admin Access</span>
-          </div>
-          <p style="font-size:11px;color:#94a3b8;margin-bottom:12px;line-height:1.5;">
-            Create logins for your team. Staff can scrape, research, and export leads, but cannot alter system settings or view database credentials.
-          </p>
-
-          <!-- Add User Form -->
-          <div style="background:#1e293b;padding:12px;border-radius:8px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.06);">
-            <div style="font-size:12px;font-weight:700;color:#f8fafc;margin-bottom:8px;">+ Add New Team Member</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-              <input type="email" id="new-team-email" placeholder="staff@zenthoz.com" style="padding:8px 10px;font-size:12px;">
-              <input type="password" id="new-team-password" placeholder="Password (min 6 chars)" style="padding:8px 10px;font-size:12px;">
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-              <input type="text" id="new-team-name" placeholder="Staff Name (e.g. John)" style="padding:8px 10px;font-size:12px;">
-              <select id="new-team-role" class="form-select" style="padding:8px 10px;font-size:12px;">
-                <option value="staff">Staff (No Settings Access)</option>
-                <option value="admin">Administrator (Full Access)</option>
-              </select>
-            </div>
-            <button type="button" class="btn btn-emerald btn-sm" id="btn-create-team-user">
-              👤 Create Team User
-            </button>
-            <div id="new-team-msg" style="display:none;font-size:11px;margin-top:8px;padding:6px 10px;border-radius:6px;"></div>
-          </div>
-
-          <!-- Existing Team List -->
-          <div style="font-size:12px;font-weight:700;color:#cbd5e1;margin-bottom:6px;">Active Team Members</div>
-          <div id="team-members-list" style="max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;">
-            <!-- Populated dynamically -->
-          </div>
-        </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" id="btn-save-settings">Save Settings</button>
@@ -544,113 +461,6 @@
     </div>
   </div>
 
-  <!-- CHROME EXTENSION DOWNLOAD & INSTALLATION GUIDE MODAL -->
-  <div class="modal-backdrop" id="modal-download-ext">
-    <div class="modal-card" style="max-width:680px;width:95%;">
-      <div class="modal-header">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(16,185,129,0.4);">
-            <span style="font-size:22px;">🧩</span>
-          </div>
-          <div>
-            <h2 style="font-size:20px;font-weight:800;color:#f8fafc;margin:0;">Zen Scrapper Chrome Extension</h2>
-            <p class="modal-subtitle" style="margin:2px 0 0;color:#94a3b8;font-size:12px;">Install on Chrome, Edge, Brave, or Opera to scrape leads directly from Google Maps</p>
-          </div>
-        </div>
-        <button class="modal-close" id="btn-close-download-ext" aria-label="Close">&times;</button>
-      </div>
-      <div class="modal-body" style="padding:18px 22px;">
-        <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:14px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-          <div>
-            <div style="font-size:14px;font-weight:700;color:#34d399;">zen-scrapper-extension.zip</div>
-            <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Pre-configured with Supabase live cloud sync & Google Maps auto-scraper</div>
-          </div>
-          <a href="zen-scrapper-extension.zip" download="zen-scrapper-extension.zip" class="btn btn-emerald" style="text-decoration:none;font-weight:700;padding:8px 16px;font-size:13px;box-shadow:0 0 16px rgba(16,185,129,0.4);">
-            📥 Download Extension ZIP
-          </a>
-        </div>
-
-        <div style="font-size:13px;font-weight:700;color:#f8fafc;margin-bottom:12px;">⚡ 3-Step Quick Installation Guide:</div>
-
-        <div class="installation-steps" style="display:flex;flex-direction:column;gap:12px;">
-          <div style="display:flex;gap:12px;background:#1e293b;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
-            <div style="width:28px;height:28px;border-radius:50%;background:#3b82f6;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">1</div>
-            <div>
-              <div style="font-size:13px;font-weight:700;color:#e2e8f0;">Unzip the downloaded file</div>
-              <div style="font-size:12px;color:#94a3b8;margin-top:2px;">Right-click <code>zen-scrapper-extension.zip</code> and select <strong>"Extract All..."</strong> to extract into a folder on your computer.</div>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:12px;background:#1e293b;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
-            <div style="width:28px;height:28px;border-radius:50%;background:#8b5cf6;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">2</div>
-            <div style="flex:1;">
-              <div style="font-size:13px;font-weight:700;color:#e2e8f0;">Open Extensions & Enable Developer Mode</div>
-              <div style="font-size:12px;color:#94a3b8;margin-top:2px;">
-                In Chrome or Brave, navigate to <code>chrome://extensions</code> (or <code>edge://extensions</code> for Edge).
-                Toggle ON <strong>"Developer mode"</strong> in the top-right corner.
-              </div>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:12px;background:#1e293b;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
-            <div style="width:28px;height:28px;border-radius:50%;background:#10b981;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">3</div>
-            <div>
-              <div style="font-size:13px;font-weight:700;color:#e2e8f0;">Click "Load unpacked" & Select Folder</div>
-              <div style="font-size:12px;color:#94a3b8;margin-top:2px;">Click the <strong>"Load unpacked"</strong> button in the top-left and select the unzipped folder. The Zen Scrapper extension is now installed!</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top:16px;padding:12px 14px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);border-radius:8px;font-size:12px;color:#93c5fd;line-height:1.5;">
-          💡 <strong>How it works:</strong> Search any niche or location on Google Maps (e.g. <em>"Austin Texas roofing contractor"</em>). The floating Zen Scrapper widget automatically appears. Click <strong>"🚀 Auto-Scrape & Audit All"</strong>. When finished, clicking <strong>"📊 Open Dashboard"</strong> sends you straight to this live cloud dashboard with all leads synced automatically!
-        </div>
-      </div>
-      <div class="modal-footer" style="display:flex;justify-content:space-between;align-items:center;">
-        <a href="https://www.google.com/maps/search/roofing+contractor" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
-          🗺️ Open Google Maps
-        </a>
-        <button class="btn btn-secondary" id="btn-done-download-ext">Got it, Let's Go</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TEAM SIGN IN / AUTH GATEKEEPER MODAL -->
-  <div class="modal-backdrop" id="auth-gate-modal" style="display:none;z-index:99999;background:rgba(10,15,30,0.96);backdrop-filter:blur(12px);">
-    <div class="modal-card" style="max-width:440px;width:92%;margin:auto;box-shadow:0 25px 60px rgba(0,0,0,0.85);border:1px solid rgba(139,92,246,0.35);padding:24px;">
-      <div class="modal-header" style="text-align:center;display:block;border-bottom:1px solid rgba(148,163,184,0.12);padding-bottom:18px;">
-        <div style="width:52px;height:52px;margin:0 auto 12px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(139,92,246,0.5);">
-          <svg viewBox="0 0 24 24" style="width:30px;height:30px;fill:#fff;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        </div>
-        <h2 style="font-size:22px;font-weight:800;color:#f8fafc;margin:0;letter-spacing:-0.5px;">Zen Scrapper</h2>
-        <div style="font-size:12px;color:#a78bfa;font-weight:700;margin-top:4px;letter-spacing:0.5px;text-transform:uppercase;">Zenthoz Digital Marketing • Team Portal</div>
-        <p style="font-size:12px;color:#94a3b8;margin:8px 0 0;line-height:1.4;">Sign in to access your live lead scraping engine & campaigns.</p>
-      </div>
-
-      <div class="modal-body" style="padding:20px 0 10px;">
-        <form id="form-auth-login" onsubmit="return false;">
-          <div class="form-group" style="margin-bottom:14px;">
-            <label style="font-size:12px;color:#cbd5e1;font-weight:600;margin-bottom:6px;display:block;">Team Email</label>
-            <input type="email" id="auth-email" placeholder="zenthoztechnologies@gmail.com" required style="width:100%;padding:10px 12px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#fff;font-size:13px;">
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label style="font-size:12px;color:#cbd5e1;font-weight:600;margin-bottom:6px;display:block;">Password</label>
-            <input type="password" id="auth-password" placeholder="••••••••" required style="width:100%;padding:10px 12px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#fff;font-size:13px;">
-          </div>
-
-          <div id="auth-error-msg" style="display:none;background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);padding:10px 12px;border-radius:8px;font-size:12px;line-height:1.4;margin-bottom:14px;"></div>
-
-          <button type="submit" id="btn-auth-signin" class="btn btn-primary" style="width:100%;padding:12px;font-size:14px;font-weight:700;justify-content:center;">
-            🔐 Sign In to Zen Scrapper
-          </button>
-        </form>
-      </div>
-
-      <div style="text-align:center;padding-top:14px;border-top:1px solid rgba(148,163,184,0.1);font-size:11px;color:#64748b;">
-        🔒 Private Team Portal • Protected by Supabase Row-Level Security
-      </div>
-    </div>
-  </div>
-
   <!-- Notification Toast -->
   <div class="toast" id="toast"></div>
 
@@ -666,7 +476,6 @@
   <script src="auditor.js"></script>
   <script src="deep_search.js"></script>
   <script src="lead_directory.js"></script>
-  <script src="supabase_sync.js"></script>
   <script src="dashboard.js"></script>
 </body>
 </html>

@@ -61,156 +61,12 @@
   const pitchModal = document.getElementById('pitch-modal');
   const settingsModal = document.getElementById('settings-modal');
 
-  // Team Auth Elements
-  const authGateModal = document.getElementById('auth-gate-modal');
-  const authEmailInput = document.getElementById('auth-email');
-  const authPassInput = document.getElementById('auth-password');
-  const authErrorMsg = document.getElementById('auth-error-msg');
-  const btnAuthSignIn = document.getElementById('btn-auth-signin');
-  const btnAuthSignOut = document.getElementById('btn-auth-signout');
-  const navUserDisplay = document.getElementById('nav-user-display');
-  const btnSettingsModal = document.getElementById('btn-settings-modal');
-  const sectionTeamMgmt = document.getElementById('section-admin-team-mgmt');
-  const btnCreateTeamUser = document.getElementById('btn-create-team-user');
-  const newTeamEmail = document.getElementById('new-team-email');
-  const newTeamPassword = document.getElementById('new-team-password');
-  const newTeamName = document.getElementById('new-team-name');
-  const newTeamRole = document.getElementById('new-team-role');
-  const newTeamMsg = document.getElementById('new-team-msg');
-  const teamMembersList = document.getElementById('team-members-list');
-
-  // Enforce Role-Based UI Access (Admin vs Staff)
-  function applyRoleAccess(role, user) {
-    const isAdmin = (role === 'admin') || (user && user.email && user.email.toLowerCase() === 'zenthoztechnologies@gmail.com');
-    if (navUserDisplay && user) {
-      navUserDisplay.textContent = `${user.email} (${isAdmin ? 'Admin' : 'Staff'})`;
-    }
-
-    if (btnSettingsModal) {
-      if (isAdmin) {
-        btnSettingsModal.style.display = 'inline-flex';
-      } else {
-        // Staff has ZERO ACCESS to settings!
-        btnSettingsModal.style.display = 'none';
-      }
-    }
-
-    if (sectionTeamMgmt) {
-      sectionTeamMgmt.style.display = isAdmin ? 'block' : 'none';
-    }
-
-    if (isAdmin) {
-      renderTeamMembers();
-    }
-  }
-
-  // Render Team Members List (Admin Only)
-  async function renderTeamMembers() {
-    if (!teamMembersList || typeof SupabaseSync === 'undefined' || !SupabaseSync.isAdmin()) return;
-    const res = await SupabaseSync.fetchTeamMembers();
-    if (!res.success || !res.members) return;
-
-    let html = '';
-    res.members.forEach(m => {
-      const isPrimary = (m.email.toLowerCase() === 'zenthoztechnologies@gmail.com');
-      const roleBadge = m.role === 'admin'
-        ? '<span class="badge-tag badge-success" style="font-size:10px;">Admin</span>'
-        : '<span class="badge-tag badge-neutral" style="font-size:10px;">Staff</span>';
-
-      html += `
-        <div style="display:flex;justify-content:space-between;align-items:center;background:#0f172a;padding:8px 10px;border-radius:6px;border:1px solid #334155;">
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#f8fafc;">${escapeHtml(m.email)}</div>
-            <div style="font-size:10px;color:#94a3b8;margin-top:2px;">${escapeHtml(m.name || '')} • ${roleBadge}</div>
-          </div>
-          <div>
-            ${!isPrimary ? `
-              <button class="btn btn-danger-ghost btn-sm btn-delete-team-member" data-email="${escapeHtml(m.email)}" style="font-size:10px;padding:3px 7px;" title="Remove team member">
-                Delete
-              </button>
-            ` : '<span style="font-size:10px;color:#94a3b8;">Primary</span>'}
-          </div>
-        </div>
-      `;
-    });
-
-    teamMembersList.innerHTML = html;
-
-    // Attach delete listeners
-    teamMembersList.querySelectorAll('.btn-delete-team-member').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        const email = e.currentTarget.getAttribute('data-email');
-        if (confirm(`Remove user ${email} from team access?`)) {
-          await SupabaseSync.deleteTeamMember(email);
-          renderTeamMembers();
-          showToast(`User ${email} removed.`);
-        }
-      });
-    });
-  }
-
-  // Check & Enforce Authentication
-  async function checkAuthGate() {
-    if (typeof SupabaseSync === 'undefined') return true;
-    const authState = await SupabaseSync.restoreAuth();
-    if (authState.isAuthenticated && authState.user) {
-      if (authGateModal) {
-        authGateModal.style.display = 'none';
-        authGateModal.classList.remove('active');
-      }
-      applyRoleAccess(authState.role, authState.user);
-      return true;
-    } else {
-      if (authGateModal) {
-        authGateModal.style.display = 'flex';
-        authGateModal.classList.add('active');
-        if (authEmailInput) authEmailInput.focus();
-      }
-      return false;
-    }
-  }
-
   // Toast Helper
   function showToast(msg) {
     if (!toastEl) return;
     toastEl.textContent = msg;
     toastEl.classList.add('show');
     setTimeout(() => toastEl.classList.remove('show'), 3200);
-  }
-
-  // Update Live Cloud Database status indicators (Pill & Settings Badge)
-  function updateCloudStatusUI() {
-    const isConnected = (typeof SupabaseSync !== 'undefined' && SupabaseSync.isConfigured());
-    const badge = document.getElementById('cloud-sync-status-badge');
-    const pillIcon = document.getElementById('nav-cloud-icon');
-    const pillText = document.getElementById('nav-cloud-text');
-    const pillBtn = document.getElementById('btn-cloud-status-pill');
-
-    if (badge) {
-      if (isConnected) {
-        badge.textContent = '🟢 Connected to Supabase';
-        badge.className = 'badge-tag badge-success';
-      } else {
-        badge.textContent = '⚪ Local Storage Only';
-        badge.className = 'badge-tag badge-neutral';
-      }
-    }
-
-    if (pillBtn && pillIcon && pillText) {
-      if (isConnected) {
-        pillIcon.textContent = '🟢';
-        pillText.textContent = 'Cloud Live';
-        pillBtn.style.borderColor = 'rgba(16, 185, 129, 0.5)';
-        pillBtn.style.color = '#34d399';
-        pillBtn.title = 'Live Cloud Sync Active (Connected to Supabase PostgreSQL)';
-      } else {
-        pillIcon.textContent = '☁️';
-        pillText.textContent = 'Live Cloud';
-        pillBtn.style.borderColor = 'rgba(139, 92, 246, 0.35)';
-        pillBtn.style.color = '#c4b5fd';
-        pillBtn.title = 'Configure Live Cloud Database (Supabase & Vercel)';
-      }
-    }
   }
 
   // Get currently active session object
@@ -1686,25 +1542,6 @@
       document.getElementById('setting-sender-phone').value = userSettings.senderPhone || '+1 307 301 2270';
       document.getElementById('setting-service-type').value = userSettings.serviceType || 'High-Converting Web Design, SEO & Lead Generation';
       document.getElementById('setting-show-total-leads').checked = Boolean(userSettings.showTotalLeads);
-      const urlInput = document.getElementById('setting-supabase-url');
-      if (urlInput) urlInput.value = userSettings.supabaseUrl || '';
-      const keyInput = document.getElementById('setting-supabase-key');
-      if (keyInput) keyInput.value = userSettings.supabaseAnonKey || '';
-      updateCloudStatusUI();
-    }
-
-    // Nav Cloud Pill Button
-    const btnCloudPill = document.getElementById('btn-cloud-status-pill');
-    if (btnCloudPill) {
-      btnCloudPill.addEventListener('click', () => {
-        populateSettingsInputs();
-        settingsModal.classList.add('active');
-        const urlInput = document.getElementById('setting-supabase-url');
-        if (urlInput) {
-          urlInput.focus();
-          urlInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      });
     }
 
     document.getElementById('btn-settings-modal').addEventListener('click', () => {
@@ -1714,151 +1551,7 @@
 
     document.getElementById('btn-close-settings').addEventListener('click', () => settingsModal.classList.remove('active'));
 
-    // Test Cloud Connection Button
-    const btnTestCloud = document.getElementById('btn-test-cloud-sync');
-    const cloudMsg = document.getElementById('cloud-sync-msg');
-    if (btnTestCloud) {
-      btnTestCloud.addEventListener('click', async () => {
-        const url = (document.getElementById('setting-supabase-url')?.value || '').trim();
-        const key = (document.getElementById('setting-supabase-key')?.value || '').trim();
-        if (!url || !key) {
-          if (cloudMsg) {
-            cloudMsg.style.display = 'block';
-            cloudMsg.style.background = 'rgba(239, 68, 68, 0.15)';
-            cloudMsg.style.color = '#f87171';
-            cloudMsg.style.border = '1px solid rgba(239, 68, 68, 0.3)';
-            cloudMsg.textContent = '❌ Please enter both your Supabase Project URL and Anon Public Key.';
-          }
-          return;
-        }
-
-        btnTestCloud.disabled = true;
-        btnTestCloud.textContent = '⏳ Testing...';
-
-        if (typeof SupabaseSync !== 'undefined') {
-          SupabaseSync.init(url, key);
-          const testRes = await SupabaseSync.testConnection();
-          btnTestCloud.disabled = false;
-          btnTestCloud.textContent = '⚡ Test Connection';
-          if (cloudMsg) {
-            cloudMsg.style.display = 'block';
-            if (testRes.success) {
-              cloudMsg.style.background = 'rgba(16, 185, 129, 0.15)';
-              cloudMsg.style.color = '#34d399';
-              cloudMsg.style.border = '1px solid rgba(16, 185, 129, 0.3)';
-              cloudMsg.textContent = '✅ ' + testRes.message;
-            } else {
-              cloudMsg.style.background = 'rgba(239, 68, 68, 0.15)';
-              cloudMsg.style.color = '#f87171';
-              cloudMsg.style.border = '1px solid rgba(239, 68, 68, 0.3)';
-              cloudMsg.textContent = '❌ ' + testRes.message;
-            }
-          }
-          updateCloudStatusUI();
-        }
-      });
-    }
-
-    // Push All Campaigns & Leads to Supabase
-    const btnSyncCloudNow = document.getElementById('btn-sync-cloud-now');
-    if (btnSyncCloudNow) {
-      btnSyncCloudNow.addEventListener('click', async () => {
-        const url = (document.getElementById('setting-supabase-url')?.value || '').trim();
-        const key = (document.getElementById('setting-supabase-key')?.value || '').trim();
-        if (url && key && typeof SupabaseSync !== 'undefined') {
-          SupabaseSync.init(url, key);
-        }
-        if (!SupabaseSync || !SupabaseSync.isConfigured()) {
-          showToast('Please enter and save Supabase credentials first.');
-          return;
-        }
-        if (sessions.length === 0) {
-          showToast('No local campaigns to sync.');
-          return;
-        }
-        btnSyncCloudNow.disabled = true;
-        btnSyncCloudNow.textContent = '⏳ Syncing...';
-        if (cloudMsg) {
-          cloudMsg.style.display = 'block';
-          cloudMsg.style.background = 'rgba(139, 92, 246, 0.15)';
-          cloudMsg.style.color = '#c4b5fd';
-          cloudMsg.style.border = '1px solid rgba(139, 92, 246, 0.3)';
-          cloudMsg.textContent = `Syncing ${sessions.length} campaigns to Supabase...`;
-        }
-        let successCount = 0;
-        for (const s of sessions) {
-          const res = await SupabaseSync.syncSession(s);
-          if (res.success) successCount++;
-        }
-        btnSyncCloudNow.disabled = false;
-        btnSyncCloudNow.textContent = '🔄 Sync to Cloud';
-        if (cloudMsg) {
-          cloudMsg.style.background = 'rgba(16, 185, 129, 0.15)';
-          cloudMsg.style.color = '#34d399';
-          cloudMsg.style.border = '1px solid rgba(16, 185, 129, 0.3)';
-          cloudMsg.textContent = `✅ Successfully synced ${successCount}/${sessions.length} campaigns to live Supabase database!`;
-        }
-        showToast(`Synced ${successCount} campaigns to Supabase.`);
-      });
-    }
-
-    // Pull All Campaigns & Leads from Supabase
-    const btnPullCloudNow = document.getElementById('btn-pull-cloud-now');
-    if (btnPullCloudNow) {
-      btnPullCloudNow.addEventListener('click', async () => {
-        const url = (document.getElementById('setting-supabase-url')?.value || '').trim();
-        const key = (document.getElementById('setting-supabase-key')?.value || '').trim();
-        if (url && key && typeof SupabaseSync !== 'undefined') {
-          SupabaseSync.init(url, key);
-        }
-        if (!SupabaseSync || !SupabaseSync.isConfigured()) {
-          showToast('Please enter and save Supabase credentials first.');
-          return;
-        }
-        btnPullCloudNow.disabled = true;
-        btnPullCloudNow.textContent = '⏳ Pulling...';
-        const res = await SupabaseSync.fetchSessionsAndLeads();
-        btnPullCloudNow.disabled = false;
-        btnPullCloudNow.textContent = '📥 Pull from Cloud';
-        if (res.success) {
-          if (res.sessions && res.sessions.length > 0) {
-            sessions = res.sessions;
-            if (!activeSessionId || !sessions.find(s => s.id === activeSessionId)) {
-              activeSessionId = sessions[0].id;
-            }
-            await persistSessions();
-            updateNicheFilterDropdown();
-            applyFiltersAndRender();
-            if (cloudMsg) {
-              cloudMsg.style.display = 'block';
-              cloudMsg.style.background = 'rgba(16, 185, 129, 0.15)';
-              cloudMsg.style.color = '#34d399';
-              cloudMsg.style.border = '1px solid rgba(16, 185, 129, 0.3)';
-              cloudMsg.textContent = `✅ Pulled ${res.sessions.length} campaigns from Supabase!`;
-            }
-            showToast(`Pulled ${res.sessions.length} campaigns from cloud.`);
-          } else {
-            if (cloudMsg) {
-              cloudMsg.style.display = 'block';
-              cloudMsg.style.background = 'rgba(148, 163, 184, 0.15)';
-              cloudMsg.style.color = '#94a3b8';
-              cloudMsg.style.border = '1px solid rgba(148, 163, 184, 0.3)';
-              cloudMsg.textContent = 'Cloud database has 0 campaigns yet.';
-            }
-          }
-        } else {
-          if (cloudMsg) {
-            cloudMsg.style.display = 'block';
-            cloudMsg.style.background = 'rgba(239, 68, 68, 0.15)';
-            cloudMsg.style.color = '#f87171';
-            cloudMsg.style.border = '1px solid rgba(239, 68, 68, 0.3)';
-            cloudMsg.textContent = `❌ Cloud pull failed: ${res.error || 'Check database connection'}`;
-          }
-        }
-      });
-    }
-
-    // Save Settings
+    // Save Settings (Local storage)
     document.getElementById('btn-save-settings').addEventListener('click', async () => {
       userSettings.senderName = document.getElementById('setting-sender-name').value.trim() || 'Iqam Ifthikar';
       userSettings.agencyName = document.getElementById('setting-agency-name').value.trim() || 'Zenthoz Digital Marketing';
@@ -1866,23 +1559,11 @@
       userSettings.senderPhone = document.getElementById('setting-sender-phone').value.trim() || '+1 307 301 2270';
       userSettings.serviceType = document.getElementById('setting-service-type').value.trim() || 'High-Converting Web Design, SEO & Lead Generation';
       userSettings.showTotalLeads = document.getElementById('setting-show-total-leads').checked;
-      userSettings.supabaseUrl = (document.getElementById('setting-supabase-url')?.value || '').trim();
-      userSettings.supabaseAnonKey = (document.getElementById('setting-supabase-key')?.value || '').trim();
 
       if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
         chrome.storage.local.set({ settings: userSettings });
       }
       localStorage.setItem('zenscrapper_settings', JSON.stringify(userSettings));
-
-      if (typeof SupabaseSync !== 'undefined') {
-        SupabaseSync.init(userSettings.supabaseUrl, userSettings.supabaseAnonKey);
-      }
-      updateCloudStatusUI();
-
-      // If configured and local campaigns exist, perform background sync
-      if (typeof SupabaseSync !== 'undefined' && SupabaseSync.isConfigured() && sessions.length > 0) {
-        sessions.forEach(s => SupabaseSync.syncSession(s).catch(() => {}));
-      }
 
       // Re-generate pitch kits across all sessions
       sessions.forEach(sess => {
@@ -1897,117 +1578,6 @@
       settingsModal.classList.remove('active');
       showToast('Settings saved!');
     });
-
-    // 12. Team Auth & Sign In Handler
-    const authForm = document.getElementById('form-auth-login');
-    if (authForm) {
-      authForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = (authEmailInput?.value || '').trim();
-        const password = (authPassInput?.value || '').trim();
-        if (!email || !password) {
-          if (authErrorMsg) {
-            authErrorMsg.style.display = 'block';
-            authErrorMsg.textContent = 'Please enter both email and password.';
-          }
-          return;
-        }
-
-        if (btnAuthSignIn) {
-          btnAuthSignIn.disabled = true;
-          btnAuthSignIn.textContent = '⏳ Signing In...';
-        }
-        if (authErrorMsg) authErrorMsg.style.display = 'none';
-
-        const res = await SupabaseSync.signIn(email, password);
-        if (btnAuthSignIn) {
-          btnAuthSignIn.disabled = false;
-          btnAuthSignIn.textContent = '🔐 Sign In to Zen Scrapper';
-        }
-
-        if (res.success) {
-          if (authGateModal) {
-            authGateModal.style.display = 'none';
-            authGateModal.classList.remove('active');
-          }
-          applyRoleAccess(res.role, res.user);
-          await loadData();
-          showToast(`Welcome back, ${res.user.email}!`);
-        } else {
-          if (authErrorMsg) {
-            authErrorMsg.style.display = 'block';
-            authErrorMsg.textContent = res.error || 'Invalid credentials.';
-          }
-        }
-      });
-    }
-
-    // Sign Out Button
-    if (btnAuthSignOut) {
-      btnAuthSignOut.addEventListener('click', async () => {
-        if (confirm('Sign out of Zen Scrapper?')) {
-          await SupabaseSync.signOut();
-          if (authPassInput) authPassInput.value = '';
-          if (authGateModal) {
-            authGateModal.style.display = 'flex';
-            authGateModal.classList.add('active');
-            if (authEmailInput) authEmailInput.focus();
-          }
-          if (navUserDisplay) navUserDisplay.textContent = 'Signed Out';
-          showToast('Signed out successfully.');
-        }
-      });
-    }
-
-    // Admin Create Team User
-    if (btnCreateTeamUser) {
-      btnCreateTeamUser.addEventListener('click', async () => {
-        const email = (newTeamEmail?.value || '').trim();
-        const password = (newTeamPassword?.value || '').trim();
-        const name = (newTeamName?.value || '').trim();
-        const role = (newTeamRole?.value || 'staff');
-
-        if (!email || !password) {
-          if (newTeamMsg) {
-            newTeamMsg.style.display = 'block';
-            newTeamMsg.style.background = 'rgba(239, 68, 68, 0.15)';
-            newTeamMsg.style.color = '#f87171';
-            newTeamMsg.style.border = '1px solid rgba(239, 68, 68, 0.3)';
-            newTeamMsg.textContent = 'Email and password are required.';
-          }
-          return;
-        }
-
-        btnCreateTeamUser.disabled = true;
-        btnCreateTeamUser.textContent = '⏳ Creating User...';
-        const res = await SupabaseSync.createTeamUser(email, password, role, name);
-        btnCreateTeamUser.disabled = false;
-        btnCreateTeamUser.textContent = '👤 Create Team User';
-
-        if (res.success) {
-          if (newTeamMsg) {
-            newTeamMsg.style.display = 'block';
-            newTeamMsg.style.background = 'rgba(16, 185, 129, 0.15)';
-            newTeamMsg.style.color = '#34d399';
-            newTeamMsg.style.border = '1px solid rgba(16, 185, 129, 0.3)';
-            newTeamMsg.textContent = res.message;
-          }
-          if (newTeamEmail) newTeamEmail.value = '';
-          if (newTeamPassword) newTeamPassword.value = '';
-          if (newTeamName) newTeamName.value = '';
-          renderTeamMembers();
-          showToast(`Created ${role} user: ${email}!`);
-        } else {
-          if (newTeamMsg) {
-            newTeamMsg.style.display = 'block';
-            newTeamMsg.style.background = 'rgba(239, 68, 68, 0.15)';
-            newTeamMsg.style.color = '#f87171';
-            newTeamMsg.style.border = '1px solid rgba(239, 68, 68, 0.3)';
-            newTeamMsg.textContent = res.error;
-          }
-        }
-      });
-    }
   }
 
   // 12. TARGET SEARCH DIRECTORY (Niches & Location Areas)
@@ -2353,61 +1923,11 @@
     renderNichesCards();
   }
 
-  // 13. CHROME EXTENSION DOWNLOAD & INSTALLATION GUIDE MODAL
-  function initDownloadExtModal() {
-    const extModal = document.getElementById('modal-download-ext');
-    const btnDownloadNav = document.getElementById('btn-download-ext');
-    const btnDownloadEmpty = document.getElementById('btn-empty-download-ext');
-    const btnClose = document.getElementById('btn-close-download-ext');
-    const btnDone = document.getElementById('btn-done-download-ext');
-
-    if (!extModal) return;
-
-    function openModal() {
-      extModal.classList.add('active');
-    }
-
-    function closeModal() {
-      extModal.classList.remove('active');
-    }
-
-    if (btnDownloadNav) {
-      btnDownloadNav.addEventListener('click', () => {
-        showToast('📥 Downloading Zen Scrapper extension...', 'info');
-        openModal();
-      });
-    }
-
-    if (btnDownloadEmpty) {
-      btnDownloadEmpty.addEventListener('click', () => {
-        const a = document.createElement('a');
-        a.href = 'zen-scrapper-extension.zip';
-        a.download = 'zen-scrapper-extension.zip';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        showToast('📥 Downloading Zen Scrapper extension...', 'info');
-        openModal();
-      });
-    }
-
-    if (btnClose) btnClose.addEventListener('click', closeModal);
-    if (btnDone) btnDone.addEventListener('click', closeModal);
-
-    extModal.addEventListener('click', (e) => {
-      if (e.target === extModal) closeModal();
-    });
-  }
-
   // Initialize
-  document.addEventListener('DOMContentLoaded', async () => {
+  document.addEventListener('DOMContentLoaded', () => {
     setupEvents();
     initDirectoryModal();
-    initDownloadExtModal();
-    const isAuthed = await checkAuthGate();
-    if (isAuthed) {
-      loadData();
-    }
+    loadData();
   });
 })();
 

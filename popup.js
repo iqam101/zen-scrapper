@@ -30,9 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.tabs.create({ url: `https://www.google.com/maps/search/${encodeURIComponent(q)}` });
   });
 
-  // Open Live Dashboard on Vercel
+  // Open Local Dashboard
   document.getElementById('pop-btn-dash').addEventListener('click', () => {
-    chrome.tabs.create({ url: 'https://zen-scrapper.vercel.app/dashboard.html' });
+    chrome.tabs.create({ url: chrome.runtime.getURL('dashboard.html') });
   });
 
   // Open Side Panel

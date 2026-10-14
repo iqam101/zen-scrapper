@@ -10,13 +10,11 @@ import './niche_classifier.js';
 import './pitch_generator.js';
 import './auditor.js';
 import './deep_search.js';
-import './supabase_sync.js';
 
 const NicheClassifier = globalThis.NicheClassifier;
 const Auditor = globalThis.Auditor;
 const PitchGenerator = globalThis.PitchGenerator;
 const DeepSearch = globalThis.DeepSearch;
-const SupabaseSync = globalThis.SupabaseSync;
 
 console.log('[Zen Scrapper by Iqam Ifthikar] Background service worker initialized.');
 
@@ -256,13 +254,6 @@ async function saveSessionLeads(searchTerm, rawLeads) {
   await chrome.storage.local.set({ sessions, activeSessionId: session.id });
   await updateBadge();
 
-  // Auto-sync session to Supabase so live Vercel dashboard receives updates immediately
-  if (typeof SupabaseSync !== 'undefined' && SupabaseSync.isConfigured()) {
-    SupabaseSync.syncSession(session).catch(err => {
-      console.warn('[Zen Scrapper] Background auto-sync to Supabase warning:', err);
-    });
-  }
-
   return { sessions, activeSession: session };
 }
 
@@ -397,9 +388,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   // 5. Navigation
   if (type === 'OPEN_DASHBOARD') {
-    const targetUrl = (payload && payload.url) ? payload.url : 'https://zen-scrapper.vercel.app/dashboard.html';
-    chrome.tabs.create({ url: targetUrl });
-    sendResponse({ success: true, url: targetUrl });
+    chrome.tabs.create({ url: chrome.runtime.getURL('dashboard.html') });
+    sendResponse({ success: true });
     return true;
   }
 
