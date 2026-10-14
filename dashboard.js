@@ -491,12 +491,15 @@
       }
     }
 
+    const tableEl = document.getElementById('leads-table');
     if (filtered.length === 0) {
       tbody.innerHTML = '';
+      if (tableEl) tableEl.style.display = 'none';
       emptyState.classList.add('visible');
       return;
     }
 
+    if (tableEl) tableEl.style.display = 'table';
     emptyState.classList.remove('visible');
 
     let html = '';
@@ -609,9 +612,11 @@
           <td>${lastIgHtml}</td>
           <td>${igHtml}</td>
           <td>${liHtml}</td>
-          <td style="font-size:12px;color:#94a3b8;max-width:240px;">${escapeHtml(notesVal)}</td>
+          <td><div class="notes-cell-clamp" title="${escapeHtml(notesVal)}">${escapeHtml(notesVal)}</div></td>
           <td class="pitch-cell">
-            <strong>Angle:</strong> ${escapeHtml(pitchAngleVal)}
+            <div class="pitch-text" title="${escapeHtml(pitchAngleVal)}">
+              <strong>Angle:</strong> ${escapeHtml(pitchAngleVal)}
+            </div>
           </td>
           <td>
             <div class="action-btns">
@@ -1479,6 +1484,24 @@
     document.getElementById('btn-export-gcontacts').addEventListener('click', exportToGoogleContactsCsv);
     document.getElementById('btn-export-csv').addEventListener('click', exportToCsv);
     document.getElementById('btn-copy-clipboard').addEventListener('click', copyTableToClipboard);
+
+    // 9b. Grid Height / View Mode Toggle (Scroll Box vs Full Expanded Grid)
+    const btnToggleGrid = document.getElementById('btn-toggle-grid-height');
+    const tableScrollWrap = document.querySelector('.table-scroll-wrap');
+    if (btnToggleGrid && tableScrollWrap) {
+      const savedView = localStorage.getItem('zenscrapper_grid_view');
+      if (savedView === 'expanded') {
+        tableScrollWrap.classList.add('expanded');
+        btnToggleGrid.textContent = '📦 Box View';
+      }
+
+      btnToggleGrid.addEventListener('click', () => {
+        const isExpanded = tableScrollWrap.classList.toggle('expanded');
+        btnToggleGrid.textContent = isExpanded ? '📦 Box View' : '↕ Full Height';
+        localStorage.setItem('zenscrapper_grid_view', isExpanded ? 'expanded' : 'box');
+        showToast(isExpanded ? 'Full Height View: displaying all leads with natural page scrolling' : 'Box View: scrollable table container');
+      });
+    }
 
     document.getElementById('btn-import-csv-trigger').addEventListener('click', () => {
       fileImportInput.click();
