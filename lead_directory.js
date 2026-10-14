@@ -115,35 +115,57 @@ const LeadDirectory = {
       ]
     },
     {
+      id: "car-wash-detailing",
+      name: "Car wash and auto detailing",
+      icon: "🧽",
+      description: "Hand car wash, mobile detailing, ceramic coating, paint correction, valeting, and fleet wash.",
+      niches: [
+        { name: "Hand car wash and valeting", note: "High-volume drive-in hand wash & full valet", keyword: "hand car wash valeting" },
+        { name: "Mobile car wash and detailing", note: "Driveway & workplace on-demand mobile detailing van", keyword: "mobile car wash detailing van" },
+        { name: "Auto detailing and paint correction", note: "Multi-stage machine polish & swirl removal", keyword: "auto detailing paint correction" },
+        { name: "Ceramic coating and PPF", note: "Long-term protective coatings & paint protection film", keyword: "ceramic coating PPF paint protection film" },
+        { name: "Automatic and drive-thru car wash", note: "Express conveyor & touchless car wash facilities", keyword: "automatic drive through car wash" },
+        { name: "Touchless car wash", note: "High-pressure chemical wash without brushes", keyword: "touchless car wash" },
+        { name: "Commercial fleet and truck wash", note: "B2B fleet washing for delivery vans and lorries", keyword: "commercial fleet truck wash" },
+        { name: "Self-service jet wash", note: "24/7 coin-operated pressure wash bays", keyword: "self service jet wash car wash" },
+        { name: "Car interior deep clean and steam detailing", note: "Stain removal, leather conditioning, ozone odor elimination", keyword: "car interior detailing deep clean" },
+        { name: "Window tinting and vehicle wraps", note: "Ceramic window tint, chrome delete & vinyl wrap", keyword: "car window tinting vehicle wraps" },
+        { name: "Paintless dent repair (PDR)", note: "Hail damage & door dings fixed without repainting", keyword: "paintless dent repair PDR" },
+        { name: "Alloy wheel refurbishment", note: "Powder coating, curb rash fix & diamond cut repair", keyword: "alloy wheel refurbishment repair" },
+        { name: "Engine bay and undercarriage wash", note: "Dry ice detailing & underbody rust prevention", keyword: "engine bay detailing undercarriage wash" }
+      ]
+    },
+    {
       id: "auto-mobile",
-      name: "Auto and mobile",
+      name: "Auto repair and mechanics",
       icon: "🚗",
-      description: "Automotive repair, custom styling, and on-demand mobile technicians.",
+      description: "Automotive mechanical diagnostics, body shop collision repair, and roadside assistance.",
       niches: [
         { name: "Auto repair shops", note: "Mechanical diagnostic and engine repairs", keyword: "auto repair mechanic shop" },
         { name: "Mobile mechanics", note: "On-site roadside and driveway repairs", keyword: "mobile mechanic service" },
-        { name: "Auto detailing / ceramic coating", note: "Paint correction and protective coatings", keyword: "auto detailing ceramic coating" },
-        { name: "Window tinting", note: "Ceramic tint for cars and commercial glass", keyword: "auto window tinting service" },
-        { name: "Towing companies", note: "24-hour towing and flatbed transport", keyword: "towing company 24 hour" },
         { name: "Auto body and collision repair", note: "Insurance collision restorations", keyword: "auto body collision repair shop" },
-        { name: "Windshield replacement", note: "Mobile auto glass repair", keyword: "windshield replacement mobile auto glass" }
+        { name: "Towing companies", note: "24-hour towing and flatbed transport", keyword: "towing company 24 hour" },
+        { name: "Windshield replacement", note: "Mobile auto glass repair", keyword: "windshield replacement mobile auto glass" },
+        { name: "Transmission repair specialists", note: "Gearbox rebuilds & clutch replacement", keyword: "transmission gearbox repair" },
+        { name: "Brake and tire service", note: "Mobile tire fitting & brake pads", keyword: "brake repair mobile tire fitting" }
       ]
     },
     {
       id: "other-local-services",
-      name: "Other local service businesses",
+      name: "Commercial, healthcare and local services",
       icon: "🏢",
-      description: "High-value local services, property operations, and wellness clinics.",
+      description: "High-ticket commercial operations, clinical practices, and property services.",
       niches: [
         { name: "Moving companies", note: "Long distance and local moves", keyword: "moving company local movers" },
+        { name: "Commercial cleaning & janitorial", note: "Office, medical, and industrial cleaning", keyword: "commercial cleaning janitorial services" },
+        { name: "Security systems & CCTV installation", note: "Smart surveillance, access control, and alarms", keyword: "cctv security camera installation" },
+        { name: "Dumpster rental & skip hire", note: "Waste disposal, roll-off containers & skips", keyword: "dumpster rental skip hire waste management" },
         { name: "Home inspectors", note: "Pre-purchase home and roof inspections", keyword: "certified home inspector" },
         { name: "Property management", note: "Commercial and residential rental management", keyword: "property management company" },
-        { name: "Dumpster rental", note: "Roll-off dumpster drop-offs", keyword: "roll off dumpster rental" },
-        { name: "Portable toilet rental", note: "Construction site & event sanitation", keyword: "portable toilet porta potty rental" },
-        { name: "Storage units", note: "Self-storage facility rentals", keyword: "self storage units facility" },
-        { name: "Handyman services", note: "General repairs and home fixes", keyword: "licensed handyman services" },
-        { name: "Home security system installers", note: "Smart cameras, alarms, access control", keyword: "home security system installer" },
-        { name: "Med spas, dentists, chiropractors, and veterinarians", note: "Non-trade, high-value local healthcare & beauty", keyword: "med spa cosmetic clinic dentist" }
+        { name: "Cosmetic dentistry & dental implants", note: "High-ticket smile makeovers & implants", keyword: "cosmetic dentistry dental implants" },
+        { name: "Veterinary hospital & clinic", note: "Emergency animal care & surgery", keyword: "veterinary hospital pet clinic" },
+        { name: "Chiropractic & physiotherapy clinics", note: "Spinal decompression & sports rehab", keyword: "chiropractic physiotherapy clinic" },
+        { name: "Med spas and aesthetic clinics", note: "Laser, skincare, and aesthetics", keyword: "med spa aesthetic skin clinic" }
       ]
     }
   ],
@@ -307,6 +329,368 @@ const LeadDirectory = {
         {
           name: "Western Australia",
           areas: ["Perth", "Mandurah", "Bunbury", "Fremantle", "Rockingham", "Geraldton"]
+        }
+      ]
+    },
+    {
+      country: "Germany",
+      code: "DE",
+      flag: "🇩🇪",
+      states: [
+        {
+          name: "Bavaria (Bayern)",
+          areas: ["Munich", "Nuremberg", "Augsburg", "Regensburg", "Ingolstadt", "Würzburg", "Erlangen", "Bamberg"]
+        },
+        {
+          name: "North Rhine-Westphalia (NRW)",
+          areas: ["Cologne", "Düsseldorf", "Dortmund", "Essen", "Duisburg", "Bonn", "Münster", "Aachen", "Bielefeld"]
+        },
+        {
+          name: "Baden-Württemberg",
+          areas: ["Stuttgart", "Mannheim", "Karlsruhe", "Freiburg", "Heidelberg", "Ulm", "Heilbronn", "Pforzheim"]
+        },
+        {
+          name: "Berlin",
+          areas: ["Berlin Mitte", "Charlottenburg", "Spandau", "Neukölln", "Pankow", "Tempelhof"]
+        },
+        {
+          name: "Hesse (Hessen)",
+          areas: ["Frankfurt am Main", "Wiesbaden", "Kassel", "Darmstadt", "Offenbach", "Hanau"]
+        },
+        {
+          name: "Hamburg",
+          areas: ["Hamburg City", "Altona", "Harburg", "Bergedorf", "Eimsbüttel"]
+        },
+        {
+          name: "Lower Saxony (Niedersachsen)",
+          areas: ["Hanover", "Braunschweig", "Oldenburg", "Osnabrück", "Wolfsburg", "Göttingen"]
+        }
+      ]
+    },
+    {
+      country: "France",
+      code: "FR",
+      flag: "🇫🇷",
+      states: [
+        {
+          name: "Île-de-France (Paris)",
+          areas: ["Paris", "Boulogne-Billancourt", "Saint-Denis", "Montreuil", "Nanterre", "Créteil", "Versailles", "Argenteuil"]
+        },
+        {
+          name: "Auvergne-Rhône-Alpes",
+          areas: ["Lyon", "Saint-Étienne", "Grenoble", "Villeurbanne", "Clermont-Ferrand", "Annecy", "Chambéry"]
+        },
+        {
+          name: "Provence-Alpes-Côte d'Azur",
+          areas: ["Marseille", "Nice", "Toulon", "Aix-en-Provence", "Avignon", "Cannes", "Antibes"]
+        },
+        {
+          name: "Occitanie",
+          areas: ["Toulouse", "Montpellier", "Nîmes", "Perpignan", "Béziers", "Montauban"]
+        },
+        {
+          name: "Nouvelle-Aquitaine",
+          areas: ["Bordeaux", "Limoges", "Poitiers", "Pau", "La Rochelle", "Bayonne"]
+        },
+        {
+          name: "Grand Est",
+          areas: ["Strasbourg", "Reims", "Metz", "Mulhouse", "Nancy", "Colmar"]
+        }
+      ]
+    },
+    {
+      country: "Spain",
+      code: "ES",
+      flag: "🇪🇸",
+      states: [
+        {
+          name: "Community of Madrid",
+          areas: ["Madrid", "Móstoles", "Alcalá de Henares", "Fuenlabrada", "Leganés", "Getafe", "Alcorcón"]
+        },
+        {
+          name: "Catalonia",
+          areas: ["Barcelona", "L'Hospitalet de Llobregat", "Badalona", "Terrassa", "Sabadell", "Mataró", "Tarragona", "Girona"]
+        },
+        {
+          name: "Andalusia",
+          areas: ["Seville", "Málaga", "Córdoba", "Granada", "Jerez de la Frontera", "Almería", "Marbella", "Cádiz"]
+        },
+        {
+          name: "Valencian Community",
+          areas: ["Valencia", "Alicante", "Elche", "Castellón de la Plana", "Torrevieja", "Gandia"]
+        },
+        {
+          name: "Basque Country",
+          areas: ["Bilbao", "Vitoria-Gasteiz", "San Sebastián", "Barakaldo", "Getxo"]
+        },
+        {
+          name: "Balearic Islands",
+          areas: ["Palma de Mallorca", "Ibiza", "Calvià", "Manacor"]
+        }
+      ]
+    },
+    {
+      country: "Italy",
+      code: "IT",
+      flag: "🇮🇹",
+      states: [
+        {
+          name: "Lombardy",
+          areas: ["Milan", "Brescia", "Monza", "Bergamo", "Como", "Varese", "Pavia", "Cremona"]
+        },
+        {
+          name: "Lazio",
+          areas: ["Rome", "Latina", "Guidonia Montecelio", "Fiumicino", "Tivoli", "Viterbo"]
+        },
+        {
+          name: "Campania",
+          areas: ["Naples", "Salerno", "Giugliano in Campania", "Caserta", "Torre del Greco", "Pozzuoli"]
+        },
+        {
+          name: "Piedmont",
+          areas: ["Turin", "Novara", "Alessandria", "Asti", "Moncalieri"]
+        },
+        {
+          name: "Veneto",
+          areas: ["Venice", "Verona", "Padua", "Vicenza", "Treviso", "Rovigo"]
+        },
+        {
+          name: "Emilia-Romagna",
+          areas: ["Bologna", "Parma", "Modena", "Reggio Emilia", "Ravenna", "Rimini", "Ferrara"]
+        },
+        {
+          name: "Tuscany",
+          areas: ["Florence", "Prato", "Livorno", "Arezzo", "Pistoia", "Pisa", "Lucca"]
+        }
+      ]
+    },
+    {
+      country: "Netherlands",
+      code: "NL",
+      flag: "🇳🇱",
+      states: [
+        {
+          name: "North Holland",
+          areas: ["Amsterdam", "Haarlem", "Zaanstad", "Haarlemmermeer", "Alkmaar", "Hilversum", "Amstelveen"]
+        },
+        {
+          name: "South Holland",
+          areas: ["Rotterdam", "The Hague", "Leiden", "Dordrecht", "Zoetermeer", "Delft", "Gouda"]
+        },
+        {
+          name: "Utrecht",
+          areas: ["Utrecht City", "Amersfoort", "Veenendaal", "Zeist", "Nieuwegein"]
+        },
+        {
+          name: "North Brabant",
+          areas: ["Eindhoven", "Tilburg", "Breda", "'s-Hertogenbosch", "Helmond", "Oss"]
+        },
+        {
+          name: "Gelderland",
+          areas: ["Nijmegen", "Arnhem", "Apeldoorn", "Ede", "Barneveld"]
+        }
+      ]
+    },
+    {
+      country: "Ireland",
+      code: "IE",
+      flag: "🇮🇪",
+      states: [
+        {
+          name: "Leinster",
+          areas: ["Dublin", "Swords", "Dundalk", "Bray", "Navan", "Kilkenny", "Drogheda", "Naas"]
+        },
+        {
+          name: "Munster",
+          areas: ["Cork", "Limerick", "Waterford", "Ennis", "Tralee", "Killarney", "Clonmel"]
+        },
+        {
+          name: "Connacht",
+          areas: ["Galway", "Sligo", "Castlebar", "Ballina", "Athlone"]
+        }
+      ]
+    },
+    {
+      country: "Switzerland",
+      code: "CH",
+      flag: "🇨🇭",
+      states: [
+        {
+          name: "Zurich",
+          areas: ["Zürich", "Winterthur", "Uster", "Dübendorf", "Dietikon"]
+        },
+        {
+          name: "Geneva",
+          areas: ["Geneva City", "Vernier", "Lancy", "Meyrin", "Carouge"]
+        },
+        {
+          name: "Vaud",
+          areas: ["Lausanne", "Yverdon-les-Bains", "Montreux", "Renens", "Nyon"]
+        },
+        {
+          name: "Basel",
+          areas: ["Basel City", "Riehen", "Allschwil", "Reinach"]
+        },
+        {
+          name: "Bern",
+          areas: ["Bern City", "Biel/Bienne", "Thun", "Köniz"]
+        }
+      ]
+    },
+    {
+      country: "Belgium",
+      code: "BE",
+      flag: "🇧🇪",
+      states: [
+        {
+          name: "Brussels-Capital",
+          areas: ["Brussels City", "Schaerbeek", "Anderlecht", "Ixelles", "Uccle"]
+        },
+        {
+          name: "Flanders",
+          areas: ["Antwerp", "Ghent", "Bruges", "Leuven", "Mechelen", "Aalst", "Kortrijk", "Hasselt"]
+        },
+        {
+          name: "Wallonia",
+          areas: ["Charleroi", "Liège", "Namur", "Mons", "Tournai", "La Louvière"]
+        }
+      ]
+    },
+    {
+      country: "Sweden",
+      code: "SE",
+      flag: "🇸🇪",
+      states: [
+        {
+          name: "Stockholm County",
+          areas: ["Stockholm", "Huddinge", "Nacka", "Södertälje", "Solna", "Täby", "Sollentuna"]
+        },
+        {
+          name: "Västra Götaland",
+          areas: ["Gothenburg", "Borås", "Mölndal", "Trollhättan", "Skövde"]
+        },
+        {
+          name: "Skåne",
+          areas: ["Malmö", "Helsingborg", "Lund", "Kristianstad", "Landskrona"]
+        },
+        {
+          name: "Uppsala",
+          areas: ["Uppsala City", "Enköping", "Bålsta"]
+        }
+      ]
+    },
+    {
+      country: "Norway",
+      code: "NO",
+      flag: "🇳🇴",
+      states: [
+        {
+          name: "Østlandet",
+          areas: ["Oslo", "Drammen", "Fredrikstad", "Tønsberg", "Lillestrøm", "Sarpsborg", "Moss"]
+        },
+        {
+          name: "Vestlandet",
+          areas: ["Bergen", "Stavanger", "Sandnes", "Ålesund", "Haugesund"]
+        },
+        {
+          name: "Trøndelag",
+          areas: ["Trondheim", "Stjørdal", "Steinkjer"]
+        }
+      ]
+    },
+    {
+      country: "Denmark",
+      code: "DK",
+      flag: "🇩🇰",
+      states: [
+        {
+          name: "Capital Region",
+          areas: ["Copenhagen", "Frederiksberg", "Gentofte", "Gladsaxe", "Helsingør", "Lyngby"]
+        },
+        {
+          name: "Central Denmark",
+          areas: ["Aarhus", "Randers", "Horsens", "Silkeborg", "Herning", "Viborg"]
+        },
+        {
+          name: "Southern Denmark",
+          areas: ["Odense", "Esbjerg", "Kolding", "Vejle", "Fredericia"]
+        }
+      ]
+    },
+    {
+      country: "Poland",
+      code: "PL",
+      flag: "🇵🇱",
+      states: [
+        {
+          name: "Masovian (Mazowieckie)",
+          areas: ["Warsaw", "Radom", "Płock", "Siedlce", "Pruszków"]
+        },
+        {
+          name: "Lesser Poland (Małopolskie)",
+          areas: ["Kraków", "Tarnów", "Nowy Sącz", "Oświęcim"]
+        },
+        {
+          name: "Lower Silesia (Dolnośląskie)",
+          areas: ["Wrocław", "Wałbrzych", "Legnica", "Jelenia Góra"]
+        },
+        {
+          name: "Silesian (Śląskie)",
+          areas: ["Katowice", "Częstochowa", "Sosnowiec", "Gliwice", "Bielsko-Biała", "Zabrze"]
+        },
+        {
+          name: "Greater Poland (Wielkopolskie)",
+          areas: ["Poznań", "Kalisz", "Konin", "Piła", "Ostrów Wielkopolski"]
+        }
+      ]
+    },
+    {
+      country: "Austria",
+      code: "AT",
+      flag: "🇦🇹",
+      states: [
+        {
+          name: "Vienna",
+          areas: ["Vienna City", "Favoriten", "Donaustadt", "Floridsdorf", "Ottakring"]
+        },
+        {
+          name: "Styria",
+          areas: ["Graz", "Leoben", "Kapfenberg", "Bruck an der Mur"]
+        },
+        {
+          name: "Upper Austria",
+          areas: ["Linz", "Wels", "Steyr", "Vöcklabruck"]
+        },
+        {
+          name: "Salzburg",
+          areas: ["Salzburg City", "Hallein", "Saalfelden"]
+        },
+        {
+          name: "Tyrol",
+          areas: ["Innsbruck", "Kufstein", "Telfs", "Schwaz"]
+        }
+      ]
+    },
+    {
+      country: "Portugal",
+      code: "PT",
+      flag: "🇵🇹",
+      states: [
+        {
+          name: "Lisbon District",
+          areas: ["Lisbon", "Sintra", "Cascais", "Loures", "Amadora", "Oeiras", "Almada", "Setúbal"]
+        },
+        {
+          name: "Porto District",
+          areas: ["Porto", "Vila Nova de Gaia", "Matosinhos", "Maia", "Gondomar", "Póvoa de Varzim"]
+        },
+        {
+          name: "Braga District",
+          areas: ["Braga", "Guimarães", "Famalicão", "Barcelos"]
+        },
+        {
+          name: "Faro (Algarve)",
+          areas: ["Faro", "Portimão", "Loulé", "Albufeira", "Lagos", "Olhão"]
         }
       ]
     }

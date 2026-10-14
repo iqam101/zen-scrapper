@@ -151,9 +151,35 @@ const NicheClassifier = {
       keywords: ["cleaning", "cleaner", "maid", "commercial cleaning", "office cleaning", "carpet cleaning", "window cleaning", "end of tenancy"]
     },
     {
+      canonical: "Car Wash & Auto Detailing",
+      category: "Auto and mobile",
+      keywords: [
+        "car wash", "carwash", "auto wash", "hand car wash", "mobile car wash",
+        "valeting", "valet", "car valeting", "mobile valeting", "auto detailing",
+        "car detailing", "detailer", "detailing", "ceramic coating", "paint correction",
+        "car polish", "jet wash", "touchless car wash", "fleet wash", "truck wash",
+        "interior detailing", "auto spa", "car spa", "coin op car wash"
+      ]
+    },
+    {
+      canonical: "Window Tinting & Vehicle Wraps",
+      category: "Auto and mobile",
+      keywords: ["tinting", "window tint", "car tint", "vehicle wrap", "car wrap", "vinyl wrap", "ppf", "paint protection film", "de-chrome"]
+    },
+    {
+      canonical: "Auto Body & Collision Repair",
+      category: "Auto and mobile",
+      keywords: ["body shop", "collision repair", "accident repair", "paintless dent", "dent repair", "pdr", "bumper repair", "spray painting car", "respray", "alloy wheel"]
+    },
+    {
+      canonical: "Towing & Roadside Assistance",
+      category: "Auto and mobile",
+      keywords: ["towing", "tow truck", "roadside assistance", "breakdown recovery", "vehicle recovery", "flatbed"]
+    },
+    {
       canonical: "Auto Repair & Mechanics",
       category: "Auto and mobile",
-      keywords: ["auto", "car repair", "mechanic", "garage", "mot", "vehicle repair", "towing", "breakdown", "body shop", "detailing", "tinting"]
+      keywords: ["auto repair", "car repair", "mechanic", "garage", "mot", "vehicle repair", "brake repair", "transmission repair", "oil change"]
     },
     {
       canonical: "Moving & Storage",

@@ -132,9 +132,23 @@ console.log('Sample Query 1:', query1);
 const query2 = LeadDirectory.buildSearchQuery('Milton Keynes', 'Buckinghamshire', 'United Kingdom', 'gutter installation and cleaning');
 console.log('Sample Query 2:', query2);
 
+// Test European Countries
+const countries = LeadDirectory.getCountries();
+console.log('Total Countries Available:', countries.length);
+const euroCountries = ['Germany', 'France', 'Spain', 'Italy', 'Netherlands', 'Ireland', 'Switzerland', 'Belgium', 'Sweden', 'Norway', 'Denmark', 'Poland', 'Austria', 'Portugal'];
+const allEuroPresent = euroCountries.every(c => countries.some(co => co.country === c));
+console.log('European Countries Check (14+ European nations loaded):', (allEuroPresent && countries.length >= 18) ? '✅ PASS' : '❌ FAIL');
+
+// Test Car Wash & Detailing Niches
+const carWashCat = LeadDirectory.categories.find(c => c.id === 'car-wash-detailing');
+console.log('Car Wash & Detailing Category Check:', (carWashCat && carWashCat.niches.length >= 12) ? '✅ PASS' : '❌ FAIL');
+if (carWashCat) {
+  console.log('Car Wash Sub-types Count:', carWashCat.niches.length);
+}
+
 // Test Extensibility (Adding custom country / area)
-const customAdded = LeadDirectory.addCustomLocation('Germany', '🇩🇪', 'Bavaria', 'Munich');
-console.log('Dynamic Location Extensibility Check:', customAdded && LeadDirectory.getAreas('Germany', 'Bavaria').includes('Munich') ? '✅ PASS' : '❌ FAIL');
+const customAdded = LeadDirectory.addCustomLocation('Japan', '🇯🇵', 'Kanto', 'Tokyo');
+console.log('Dynamic Location Extensibility Check:', customAdded && LeadDirectory.getAreas('Japan', 'Kanto').includes('Tokyo') ? '✅ PASS' : '❌ FAIL');
 
 // Test Multi-Filter (No Website + Specific Niche) & Export Filename
 console.log('\n--- MULTI-FILTER & SMART EXPORT FILENAME TEST ---');
@@ -176,6 +190,14 @@ const apexBiz = 'Apex Specialists Ltd';
 const classifiedApex = NicheClassifier.classify('Local Service', apexBiz, 'Milton Keynes tree cutter');
 console.log('Apex Classified via search query:', classifiedApex);
 console.log('Search Query Classification Check:', (classifiedApex === 'Tree Cutter / Arborist') ? '✅ PASS' : '❌ FAIL');
+
+// Test Car Wash Classifier Detection
+const carWashBiz1 = 'Sparkle Hand Car Wash & Valeting Center';
+const classifiedWash1 = NicheClassifier.classify('', carWashBiz1);
+const carWashBiz2 = 'Ceramic Pro Auto Detailing and PPF';
+const classifiedWash2 = NicheClassifier.classify('Mobile Valeting', carWashBiz2);
+console.log('Car Wash Classifier Check 1 (Hand Car Wash & Valeting):', (classifiedWash1 === 'Car Wash & Auto Detailing') ? '✅ PASS' : '❌ FAIL');
+console.log('Car Wash Classifier Check 2 (Ceramic Coating / Detailing):', (classifiedWash2 === 'Car Wash & Auto Detailing') ? '✅ PASS' : '❌ FAIL');
 
 // Test DeepSearch Research Audit Trail
 console.log('\n--- DEEP SEARCH RESEARCH AUDIT TRAIL TEST ---');
